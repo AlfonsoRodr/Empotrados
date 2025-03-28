@@ -2,6 +2,7 @@
 * @file FingerprintImpl.cpp
 * @brief Implementation of the operations for the Fingerprint sensor.
 * @author Alfonso Rodríguez.
+* @date 26/03/2025.
 */
 
 #include "FingerprintEsp.h"

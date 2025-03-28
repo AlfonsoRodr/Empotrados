@@ -2,6 +2,7 @@
 * @file FingerprintEsp.h
 * @brief Especification of the operations for the Fingerprint sensor.
 * @author Alfonso Rodríguez.
+* @date 26/03/2025.
 */
 
 #ifndef FINGERPRINTMODULE_H
