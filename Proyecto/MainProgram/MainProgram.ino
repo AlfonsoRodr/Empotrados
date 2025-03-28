@@ -10,8 +10,14 @@
 
 void setup() {
   setupFingerprint();
+  setupPassword();
 }
 
+/**
+* @note Luego hay que ir juntando todo de forma adecuada, pero de momento simplemente las estoy poniendo para tenerlas. 
+* Pero hay que ponerlo en el orden correcto y de la forma correcta.
+*/
 void loop() {
+  handlePasswordInput();
   fingerprintSensor();
 }
