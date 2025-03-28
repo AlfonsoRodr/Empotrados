@@ -38,24 +38,25 @@ void setupPassword() {
 /**
 * @brief It will verify is the passowrd introduced by the user matches the correct one.
 * @param result is the array where the characters entered by the user are stored.
+* @param length is the length of the password entered by te user.
 * @return true if both strings matches (the password), false otherwise.
 */
-bool verifyPassword(char result[32]) {
-    result[contador] = '\0';  // Asegurar terminación de cadena
-    if (strlen(result) != 6) {
+bool verifyPassword(char result[32], int length) {
+    if (length != 6) {  // Verifica si la longitud es correcta
         return false;
     }
-    return strcmp(result, password) == 0;
+    result[length] = '\0';  // Asegurar terminación de cadena dentro del límite
+    return strcmp(result, password) == 0;  // Comparar contraseñas
 }
 
 /**
 * @brief This is the method that will manage the password entered by the user, and verify if it is correct.
 * @note HAY QUE VER SI FUNCIONA SIN PASARLE EL ARRAY DONDE SE ALMACENA LO QUE META EL USUARIO.
 */
-void handlePasswordInput() {
+bool handlePasswordInput() {
     char tecla = teclado.getKey();
     if (tecla) {
-        if (tecla != 'S') {
+        if (tecla != 'S') {  // Si no es la tecla de enviar (Submit)
             if (contador < sizeof(result) - 1) {  // Evitar desbordamiento
                 Serial.print("Tecla presionada: ");
                 Serial.println(tecla);
@@ -63,21 +64,18 @@ void handlePasswordInput() {
                 contador++;
             } 
             else {
-                Serial.println("Contraseña Incorrecta!");
+                Serial.println("Contraseña demasiado larga!");
             }
         } 
-        else {  // Si se presiona 'S', verificar la contraseña
-            result[contador] = '\0';
-            if (verifyPassword(result)) {
-                Serial.println("Contraseña Correcta!!");
-                while (true);  // Detener ejecución
-            } 
-            else {
-                Serial.println("Contraseña Incorrecta!");
-            }
-            // Reiniciar entrada
+        else {  // Si se presiona 'S', verificar la contraseña.
+            bool isCorrect = verifyPassword(result, contador);
+            
+            // Reiniciar variables para la siguiente entrada
             contador = 0;
             memset(result, 0, sizeof(result));
+            
+            return isCorrect;
         }
     }
+    return false;  // Si no se presiona nada o la contraseña es incorrecta
 }

@@ -18,6 +18,7 @@ void setup() {
 * Pero hay que ponerlo en el orden correcto y de la forma correcta.
 */
 void loop() {
-  handlePasswordInput();
-  fingerprintSensor();
+  if (handlePasswordInput()) {
+    fingerprintSensor();
+  }
 }
