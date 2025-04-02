@@ -7,6 +7,7 @@
 
 #include "FingerprintEsp.h"
 #include "PasswordEsp.h"
+int nTries=3;
 
 void setup() {
   setupFingerprint();
@@ -20,5 +21,13 @@ void setup() {
 void loop() {
   if (handlePasswordInput()) {
     fingerprintSensor();
+    
+  }else{
+    if(nTires>0){
+      //funcion1
+    }else{
+      //funcion2
+      nTries--;
+    }
   }
 }

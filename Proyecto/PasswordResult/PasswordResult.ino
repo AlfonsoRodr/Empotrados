@@ -63,6 +63,7 @@ void wrongPsw(){
   triesLeft--;
   lcd.setCursor(0,0); // The parameters are (colum, row). It will posicionated on the screen the message we want to show. (0, 0) means first column and first row
   lcd.print("Wrong password ");  // This will be the message.
+  Serial.println("Wrong password introduced");
   lcd.setCursor (0,1); // Same thing.
   lcd.print("tries left: "); 
   lcd.print(triesLeft);
