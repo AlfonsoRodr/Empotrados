@@ -53,6 +53,8 @@ void setup() {
 */
 void correctPassword() {
   // TODO: RAÚL LO IMPLEMENTARÁ.
+  lcd.setCursor(0,0);
+  lcd.print("Correct password!!");
 }
 
 /**
@@ -97,5 +99,14 @@ void loop() {
     }
   }else{
     //Contraseña Correcta
+    correctPassword();
+    digitalWrite(LED, HIGH); // Enciende el LED si la contraseña es correcta.
+    tone(BUZZER,100);
+    delay(300);
+    tone(BUZZER,100);
+    noTone(BUZZER);
+    delay(1000);
+    lcd.clear();
+
   }
 }
