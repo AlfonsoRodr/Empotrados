@@ -1,67 +1,71 @@
 /**
  * @file PasswordManager.cpp
- * @author Alfonso Rodríguez, Rául Sánchez, Héctor Gónzalez.
- * @brief Password management system for Arduino using keypad input.
+ * @brief Implementation of the password management system for Arduino using keypad input.
+ *
+ * This file implements the core logic of a password-based access control system,
+ * including keypad handling, password verification, visual and audio feedback, and
+ * a limit on incorrect attempts. It uses a 4x4 keypad, an LCD for user interaction,
+ * and both a buzzer and LED for signaling feedback.
+ * 
+ * @authors
+ * - Alfonso Rodríguez
+ * - Raúl Sánchez
+ * - Héctor González
  * 
  * @date 2025-04-03
  */
 
 #include "PasswordManager.h"
 
-// Keypad Definition
+// --- Keypad Configuration ---
 const byte ROWS = 4;
 const byte COLS = 4;
 char keys[ROWS][COLS] = { 
   {'H', 'O', 'L', 'A'},
   {'P', 'U', 'T', 'E'},
   {'O', '1', '9', 'C'},
-  {'*', '0', 'D', 'S'}
+  {'*', '0', 'D', 'S'}  // 'S' is used to submit the password
 };
 
-// Keypad PINs
-byte rowsPins[ROWS] = {9, 8, 7, 6};    
-byte colsPins[COLS] = {5, 4, 3, 2}; 
+byte rowsPins[ROWS] = {11, 10, 9, 8};
+byte colsPins[COLS] = {7, 6, 5, 4};
 
-// Keypad object creation
+// --- Global Objects and Variables ---
 Keypad teclado = Keypad(makeKeymap(keys), rowsPins, colsPins, ROWS, COLS);
-
-// LCD and hardware
 LiquidCrystal_I2C lcd(0x3f, 16, 2);
 int triesLeft = 3;
 bool wrongIntroducedPsw = true;
 
-// Password Variables
-const char password[7] = "HOLAPU";  
-int counter = 0;
-char result[32];
+const char password[7] = "HOLAPU";  ///< Predefined 6-character password
+int counter = 0;                   ///< Tracks number of typed characters
+char result[32];                   ///< Buffer to store entered password
 
 /**
- * @brief Initializes all components and hardware (keypad, LCD, and I/O pins).
+ * @brief Initializes the password system hardware and state.
  *
- * This function is used to initialize the serial communication, LCD screen, 
- * buzzer, and LED. It also sets up the necessary configurations for the 
- * keypad and clears the password entry array.
+ * Sets up the LCD display, buzzer, LED, and serial communication.
+ * Also initializes the password buffer for user input.
  */
 void setupPasswordManager() {
     Serial.begin(9600);
-    lcd.init(); // Initialize the LCD Screen.
+    lcd.init();
     lcd.backlight();
     lcd.clear();
     pinMode(BUZZER, OUTPUT);
     pinMode(LED, OUTPUT);
     Serial.println("Sistema de contraseña listo.");
-    memset(result, 0, sizeof(result));  // Initialize the array.
+    memset(result, 0, sizeof(result));
 }
 
 /**
  * @author Alfonso Rodríguez.
- * @brief Verifies if the entered password matches the predefined password.
+ * @brief Verifies if the entered password matches the stored one.
  *
- * This function checks if the length of the entered password is 6 characters
- * and if it matches the predefined password.
+ * Compares the user-provided password with the predefined value.
+ * Only passwords of exactly 6 characters are considered valid for comparison.
  *
- * @param result A character array that contains the entered password.
- * @return Returns true if the entered password is correct, false otherwise.
+ * @param result Character array containing the user input.
+ * @return `true` if the password is correct, `false` otherwise.
  */
 bool verifyPassword(char result[32]) {
     if (strlen(result) != 6) {
@@ -72,57 +76,73 @@ bool verifyPassword(char result[32]) {
 
 /**
  * @author Alfonso Rodríguez.
- * @brief Handles the user input for password entry.
+ * @brief Displays a masked password (with asterisks) on the LCD.
  *
- * This function continuously reads keys from the keypad, displays the entered
- * keys on the LCD screen, and updates the result array with the entered keys.
- * When the 'S' key is pressed, it verifies the entered password.
+ * Each character typed by the user is represented by an asterisk (`*`)
+ * on the second line of the LCD screen to preserve confidentiality.
  */
-void handlePasswordInput() {
-    char key = teclado.getKey();
-
-    if ((key != 'S') && (key != NO_KEY)) {  // If it is not the submit key (S) and the empty key, then read the input key.
-        if (counter < 31) {  // Verifies if there are any space in the array.
-            // Print the key in the LCD Screen
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print(key);
-
-            // Print the key in the Serial Monitor
-            Serial.print("Tecla presionada: ");
-            Serial.println(key);  // Muestra la tecla en el monitor serial
-            result[counter] = key;
-            counter++;
-        }
-        else {
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print("Password is too long");
-            delay(2000);
-            return; // Finish it due to the error.
-        }
-    } 
-    else if (key == 'S') {  // If 'S' is pressed, verify the password.
-        result[counter] = '\0';
-        counter = 0;  // Reset
-        Serial.println(result);
-        Serial.println();
-        lcd.clear();
-        if (verifyPassword(result)) {
-            correctPassword();
-        }
-        else {
-            wrongPassword();
-        }
+void printPassword() {
+    lcd.setCursor(0, 1);
+    for (int i = 0; i <= counter; i++) {
+        lcd.print('*');
     }
 }
 
 /**
- * @author Raúl Sánchez.
- * @brief Handles the actions after the correct password is entered.
+ * @author Alfonso Rodríguez.
+ * @brief Handles keypad input and password submission.
  *
- * This function will display a success message on the LCD, activate the LED,
- * and generate a tone from the buzzer.
+ * This function captures user input from the keypad, updates the password buffer,
+ * and displays masked characters. Upon pressing the 'S' key, the entered password 
+ * is verified and appropriate actions are taken for success or failure.
+ *
+ * @return An integer indicating the result:
+ * - `1` → Correct password
+ * - `0` → Incorrect password
+ * - `-1` → No submission yet (still typing)
+ */
+int handlePasswordInput() {
+    char key = teclado.getKey();
+
+    if ((key != 'S') && (key != NO_KEY)) {
+        if (counter < 31) {
+            printPassword();
+            Serial.print("Tecla presionada: ");
+            Serial.println(key);
+            result[counter] = key;
+            counter++;
+        } 
+        else {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Password too long");
+            delay(2000);
+            return 0;
+        }
+    } 
+    else if (key == 'S') {
+        result[counter] = '\0';
+        counter = 0;
+        Serial.println(result);
+        lcd.clear();
+        if (verifyPassword(result)) {
+            correctPassword();
+            return 1;
+        } 
+        else {
+            wrongPassword();
+            return 0;
+        }
+    }
+    return -1;
+}
+
+/**
+ * @author Raúl Sánchez.
+ * @brief Executes success feedback upon correct password entry.
+ *
+ * This function shows a confirmation message, lights up the LED, and
+ * emits a short buzzer tone to indicate success.
  */
 void correctPassword() {
     lcd.clear();
@@ -138,19 +158,18 @@ void correctPassword() {
 
 /**
  * @author Héctor Gónzalez.
- * @brief Handles the actions after the incorrect password is entered.
+ * @brief Executes error feedback upon incorrect password entry.
  *
- * This function will display an error message on the LCD, decrease the number
- * of remaining tries, and activate the buzzer to alert the user of the wrong
- * password.
+ * Decrements the number of allowed attempts and provides feedback through
+ * the LCD and a buzzer tone. If no attempts remain, triggers a blocking alert loop.
  */
 void wrongPassword() {
     if (triesLeft > 0) {
         triesLeft--;
         lcd.setCursor(0, 0);
-        lcd.print("Wrong password ");
+        lcd.print("Wrong password");
         lcd.setCursor(0, 1);
-        lcd.print("tries left: ");
+        lcd.print("Tries left: ");
         lcd.print(triesLeft);
         delay(1000);
         tone(BUZZER, 500);
@@ -158,6 +177,7 @@ void wrongPassword() {
         noTone(BUZZER);
         lcd.clear();
     }
+
     if (triesLeft == 0) {
         lcd.setCursor(0, 0);
         lcd.print("No tries left");

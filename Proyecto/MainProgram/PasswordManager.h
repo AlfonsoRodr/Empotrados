@@ -1,11 +1,20 @@
 /**
  * @file PasswordManager.h
- * @author Alfonso Rodríguez, Rául Sánchez, Héctor Gónzalez.
- * @brief Header file for managing password functionality in an Arduino project.
+ * @brief Interface for handling password-based access control using a keypad and LCD.
+ *
+ * This header file declares the core components of a password access control system
+ * for Arduino. The system uses a keypad for password entry, an LCD screen for visual
+ * feedback, and a buzzer and LED for status signaling. It provides user feedback for 
+ * both correct and incorrect entries and enforces a limit on failed attempts.
+ *
+ * Intended to be used in conjunction with `PasswordManager.cpp`, this module is also 
+ * compatible with additional security modules such as fingerprint readers.
  * 
- * This file declares the necessary functions, variables, and hardware configurations 
- * for password management in an Arduino-based system using a keypad, LCD, and buzzer.
- * 
+ * @authors
+ * - Alfonso Rodríguez  
+ * - Raúl Sánchez  
+ * - Héctor González
+ *
  * @date 2025-04-03
  */
 
@@ -16,57 +25,68 @@
 #include <Keypad.h>
 #include <LiquidCrystal_I2C.h>
 
-// Definition for Pins and hardware
-#define BUZZER 10
-#define LED 11
+// --- Hardware Pin Definitions ---
+#define BUZZER 12  ///< Digital pin connected to the buzzer
+#define LED    11  ///< Digital pin connected to the status LED
 
-// External declaration of variables
-extern LiquidCrystal_I2C lcd;
-extern int triesLeft;
-extern bool wrongIntroducedPsw;
+// --- External Variable Declarations ---
+extern LiquidCrystal_I2C lcd;       ///< Global LCD display instance
+extern int triesLeft;               ///< Number of remaining password attempts
+extern bool wrongIntroducedPsw;     ///< Flag indicating whether a wrong password was introduced
 
 /**
- * @brief Initializes the password management system.
- * 
- * This function sets up the necessary hardware configurations for the keypad, 
- * LCD screen, and I/O pins. It also initializes the serial communication.
+ * @brief Initializes the password system and associated hardware.
+ *
+ * Sets up the LCD screen, keypad input, I/O pins (buzzer and LED), and serial communication.
+ * This function should be called in the `setup()` function of the main sketch.
+ *
+ * @note This function assumes that the LCD and keypad hardware are connected and initialized properly.
  */
 void setupPasswordManager();
 
 /**
- * @brief Verifies if the entered password matches the predefined password.
- * 
- * This function compares the entered password with the predefined password to 
- * check if they match. It ensures the entered password has the correct length.
- * 
- * @param result A character array containing the entered password.
- * @return Returns true if the entered password is correct, false otherwise.
+ * @brief Validates the entered password against a predefined value.
+ *
+ * Compares the entered password (passed as a character array) to a stored reference value.
+ * Also verifies that the password meets expected formatting or length requirements.
+ *
+ * @param result A null-terminated character array containing the user's input.
+ * @return `true` if the password is correct, `false` otherwise.
  */
 bool verifyPassword(char result[32]);
 
 /**
- * @brief Handles the user input for password entry.
- * 
- * This function reads key presses from the keypad, updates the display, and 
- * checks the entered password when the submit key is pressed. If the password 
- * is correct, it triggers the correct password actions. If incorrect, it 
- * triggers the wrong password actions.
+ * @brief Handles real-time keypad input and submission.
+ *
+ * Monitors user input via the keypad, displays the typed characters on the LCD,
+ * and triggers verification once the submit key ('S') is pressed.
+ *
+ * @return An integer status code:
+ * - `1`  → Password correct
+ * - `0`  → Password incorrect
+ * - `-1` → Awaiting user submission
+ *
+ * @note This function is non-blocking and should be called repeatedly in the main loop.
  */
-void handlePasswordInput();
+int handlePasswordInput();
 
 /**
- * @brief Actions to take when the correct password is entered.
- * 
- * This function will display a success message, activate the LED, and generate 
- * a tone on the buzzer to indicate that the correct password has been entered.
+ * @brief Executes feedback for correct password entry.
+ *
+ * Displays a success message on the LCD, activates the LED, and plays a tone
+ * on the buzzer to confirm successful access.
+ *
+ * @note Typically called by `handlePasswordInput()` or similar password verification logic.
  */
 void correctPassword();
 
 /**
- * @brief Actions to take when the wrong password is entered.
- * 
- * This function will decrement the number of remaining password attempts and 
- * display an error message. It also activates the buzzer for feedback on the wrong password.
+ * @brief Executes feedback for incorrect password entry.
+ *
+ * Decreases the number of remaining attempts, displays an error message, and 
+ * activates the buzzer for a brief tone to alert the user.
+ *
+ * @note Called automatically when password verification fails.
  */
 void wrongPassword();
 
