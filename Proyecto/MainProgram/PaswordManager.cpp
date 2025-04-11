@@ -11,6 +11,7 @@
  * - Alfonso Rodríguez
  * - Raúl Sánchez
  * - Héctor González
+ * - Andrés Muñoz
  * 
  * @date 2025-04-03
  */
@@ -24,7 +25,7 @@ char keys[ROWS][COLS] = {
   {'H', 'O', 'L', 'A'},
   {'P', 'U', 'T', 'E'},
   {'O', '1', '9', 'C'},
-  {'*', '0', 'D', 'S'}  // 'S' is used to submit the password
+  {'*', '0', 'D', 'S'}  // 'S' is used to submit the password and 'D' to delete a character
 };
 
 byte rowsPins[ROWS] = {11, 10, 9, 8};
@@ -89,6 +90,54 @@ void printPassword() {
 }
 
 /**
+ * @author Alfonso Rodríguez.1
+ * @brief Handles password submission and validation.
+ * 
+ * This function finalizes the input by null-terminating the password buffer,
+ * clears the LCD display, and prints the result to the serial monitor.
+ * It then verifies whether the input matches the predefined password.
+ * 
+ * On success, it resets the attempt counter and displays positive feedback.
+ * On failure, it calls the error handler and decrements the number of attempts.
+ * 
+ * @return `1` if the password is correct,
+ *         `0` if the password is incorrect.
+ */
+int submitPassword() {
+    result[counter] = '\0';
+    counter = 0;
+    Serial.println(result);
+    lcd.clear();
+    if (verifyPassword(result)) {
+        correctPassword();
+        triesLeft = 3;
+        return 1;
+    } 
+    else {
+        wrongPassword();
+        return 0;
+    }
+}
+
+/**
+ * @author Andrés Muñoz.
+ * @brief Deletes the last entered character from the password buffer.
+ * 
+ * This function removes the most recent character from the input buffer
+ * and updates the LCD display by erasing the corresponding asterisk (`*`)
+ * on the second row. It also repositions the cursor for consistent input feedback.
+ */
+void deleteChar() {
+    if (counter > 0) {
+        counter--;
+        result[counter] = '\0';
+        lcd.setCursor(counter, 1);
+        lcd.print(' ');
+        lcd.setCursor(counter, 1);
+    }
+}
+
+/**
  * @author Alfonso Rodríguez.
  * @brief Handles keypad input and password submission.
  *
@@ -104,7 +153,7 @@ void printPassword() {
 int handlePasswordInput() {
     char key = teclado.getKey();
 
-    if ((key != 'S') && (key != NO_KEY)) {
+    if (((key != 'S') && (key != NO_KEY)) && (key != 'D')) {
         if (counter < 31) {
             printPassword();
             Serial.print("Tecla presionada: ");
@@ -121,18 +170,10 @@ int handlePasswordInput() {
         }
     } 
     else if (key == 'S') {
-        result[counter] = '\0';
-        counter = 0;
-        Serial.println(result);
-        lcd.clear();
-        if (verifyPassword(result)) {
-            correctPassword();
-            return 1;
-        } 
-        else {
-            wrongPassword();
-            return 0;
-        }
+        return submitPassword();
+    }
+    else if (key == 'D') {
+        deleteChar();
     }
     return -1;
 }

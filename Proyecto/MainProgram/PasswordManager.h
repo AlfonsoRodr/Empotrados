@@ -14,6 +14,7 @@
  * - Alfonso Rodríguez  
  * - Raúl Sánchez  
  * - Héctor González
+ * - Andrés Muñoz
  *
  * @date 2025-04-03
  */
