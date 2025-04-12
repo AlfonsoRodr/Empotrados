@@ -17,6 +17,8 @@
 #define DHTTYPE DHT11  ///< Type of the sensor: DHT11
 #define FAN_PIN 8      ///< Pin controlling the fan (via transistor)
 
+#define TEMPERATURE_TRESHOLD 30.0 /// < Treshold value for the Temperature.
+
 /**
  * @brief Initializes the sensor and fan system.
  * 
