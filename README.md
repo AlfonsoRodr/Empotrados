@@ -1,10 +1,20 @@
 # Grupo 16: TBD
 
-## Team Members
+## Tabla de Contenidos
+- [Participantes](#participantes)
+- [Introducción](#introducción)
+- [Funcionamiento](#funcionamiento)
+- [Material Usado y Costes](#material-usado-y-costes)
+- [Diseño](#diseño)
+- [Implementación](#implementación)
+- [Construcción](#construcción)
+- [Demostración](#demostración)
+
+## Participantes
 <table>
   <thead>
-    <th>Name</th>
-    <th>University Account</th>
+    <th>Nombre</th>
+    <th>Cuenta de la Universidad</th>
   </thead>
   <tbody>
     <tr>
@@ -26,9 +36,11 @@
   </tbody>
 </table>
 
-## Tabla de Contenidos
+## Introducción
+**BREVE INTRODUCCIÓN DEL PROYECTO**
 
 ## Funcionamiento
+**AQUÍ SE VA A EXPLICAR EL FUNCIONAMIENTO DEL PROYECTO**
 
 ## Material Usado y Costes
 <table>
@@ -117,9 +129,14 @@
 </table>
 
 ## Diseño
+**AQUÍ SE VAN A METER LAS FOTOS DE LOS DIAGRAMAS DE CONEXIÓN**
+**ADEMÁS, SE HARÁN UNAS TABLAS MOSTRANDO LAS CONEXIONES DE CADA COMPOENTE PARA QUEA MÁS VISUAL**
 
 ## Implementación
+**AQUÍ SE VA A EXPLICAR COMO ESTÁ DISTRIBUIDO EL CÓDIGO, Y NO ESTOY SEGURO SI TAMBIÉN HARÍA FALTA METER EL CÓDIGO DE CADA PARTE**
 
 ## Construcción
+**AQUÍ SE MENCIONARÁN LAS FASES EN LA QUE SE ORGANIZÓ EL PROYECTO PARA CONSTRUIR LA PARTE FÍSICA**
 
 ## Demostración
+**AQUÍ VA A IR EL VIDEO DE DEMOSTRACIÓN**
