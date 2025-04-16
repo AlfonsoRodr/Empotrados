@@ -36,8 +36,8 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char *ssid = "MOVISTAR_9E2D";
-const char *password = "FW2dP52x4Fj6YoNoZE3X";
+const char *ssid = "********";
+const char *password = "*******";
 
 void startCameraServer();
 void setupLedFlash(int pin);
