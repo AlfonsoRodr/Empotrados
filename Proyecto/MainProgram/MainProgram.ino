@@ -3,7 +3,6 @@
 #include "TemperatureFanController.h"
 #include <LiquidCrystal_I2C.h>
 
-
 void setup() {
   setupPasswordManager();
   setupFingerprint();

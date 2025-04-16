@@ -45,7 +45,7 @@ bool exceededTreshold(float temperature) {
  * If the temperature is below the threshold, the fan is turned off, and a message is printed to the serial monitor.
  * The fan's state is controlled via the FAN_PIN, and the fan's status is communicated via the serial monitor.
  */
-void fanActivation() {
+void fanActivation(float temperature) {
   if (exceededTreshold(temperature)) {
     digitalWrite(FAN_PIN, HIGH);
     Serial.println("Fan ON");
@@ -63,7 +63,7 @@ void fanActivation() {
  * formatted as "Temperature: <value> °C | Humidity: <value> %".
  * The information helps to monitor the environment and assess the performance of the system.
  */
-void printData() {
+void printData(float temperature, float humidity) {
   Serial.print("Temperature: ");
   Serial.print(temperature);
   Serial.print(" °C  |  Humidity: ");
@@ -89,5 +89,6 @@ void updateTemperatureFan() {
     Serial.println("Failed to read from DHT11 sensor!");
     return;
   }
-  fanActivation();
+  printData(temperature, humidity);
+  fanActivation(temperature);
 } 

@@ -13,11 +13,11 @@
 #include <DHT.h>
 
 // --- Sensor and fan pin definitions ---
-#define DHTPIN 2       ///< Pin where the DHT11 sensor is connected
+#define DHTPIN A2       ///< Pin where the DHT11 sensor is connected (it will work as a digital pin, in specific the digital pin number 16).
 #define DHTTYPE DHT11  ///< Type of the sensor: DHT11
-#define FAN_PIN 8      ///< Pin controlling the fan (via transistor)
+#define FAN_PIN A3     ///< Pin controlling the fan (via transistor) (it will work as a digital pin, in specific the digital pin number 17).
 
-#define TEMPERATURE_TRESHOLD 30.0 /// < Treshold value for the Temperature.
+#define TEMPERATURE_TRESHOLD 20.0 /// < Treshold value for the Temperature.
 
 /**
  * @brief Initializes the sensor and fan system.
