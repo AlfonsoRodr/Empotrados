@@ -39,11 +39,12 @@ bool exceededTreshold(float temperature) {
 
 /**
  * @brief Controls the activation of the fan based on the current temperature.
- *
  * This function checks if the current temperature exceeds the predefined threshold.
  * If it does, the fan is turned on, and a message is printed to the serial monitor.
  * If the temperature is below the threshold, the fan is turned off, and a message is printed to the serial monitor.
  * The fan's state is controlled via the FAN_PIN, and the fan's status is communicated via the serial monitor.
+ *
+ * @param temperature is the temperature that has been read.
  */
 void fanActivation(float temperature) {
   if (exceededTreshold(temperature)) {
@@ -58,10 +59,12 @@ void fanActivation(float temperature) {
 
 /**
  * @brief Prints the current temperature and humidity data to the serial monitor.
- *
  * This function outputs the current temperature and humidity readings to the serial monitor,
  * formatted as "Temperature: <value> °C | Humidity: <value> %".
  * The information helps to monitor the environment and assess the performance of the system.
+ *
+ * @param temperature is the temperature that has been read.
+ * @param humidity is the humidity that has been read.
  */
 void printData(float temperature, float humidity) {
   Serial.print("Temperature: ");
