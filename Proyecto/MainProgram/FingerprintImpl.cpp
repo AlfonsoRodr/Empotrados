@@ -26,6 +26,8 @@ Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 int ledRojo = A0;
 int ledVerde = A1;
 
+int opportunities = 5;
+
 /**
  * @brief Initializes the fingerprint sensor and configures necessary hardware.
  *
@@ -92,25 +94,74 @@ void printCorrectMessage() {
 }
 
 /**
- * @brief Displays an error message when fingerprint recognition fails.
+ * @brief Reduces the remaining attempts and provides feedback.
  *
- * This function clears the LCD and informs the user that the fingerprint
- * was not detected. After a delay, it prompts the user to try again.
- *
- * @warning This function includes delays (`delay(2000)`), which may block execution for 2 seconds.
+ * Decreases `opportunities` by one, displays an error message, and activates
+ * a buzzer tone to signal an incorrect fingerprint attempt.
  */
-void printWrongMessage() {
-    lcd.clear();
+void substracFingerprintTry() {
+    opportunities--;
     lcd.setCursor(0, 0);
-    lcd.print("Fingerprint");
-    lcd.setCursor(0,1);
     lcd.print("Not Detected");
-    delay(2000);
+    lcd.setCursor(0, 1);
+    lcd.print("Tries left: ");
+    lcd.print(opportunities);
+    delay(1000);
+    tone(BUZZER, 500);
+    delay(500);
+    noTone(BUZZER);
     lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Try Again Now");
-    delay(2000);
-    lcd.clear();
+}
+
+/**
+ * @brief Handles serial communication to reset the system remotely.
+ *
+ * Listens for incoming serial data. If the character TBDS is received,
+ * the system is reset and the function returns `true`.
+ *
+ * @return `true` if a reset command was received, `false` otherwise.
+ */
+bool fingerprintSerialCom() {
+    if (Serial.available()) {
+        char receivedSignal = Serial.read();
+        if (receivedSignal == 'R') {
+            resetSystem();
+            return true;
+        }
+    }
+    return false;
+}
+
+bool hasOpportunitiesRemaining() {
+    return opportunities > 0;
+}
+
+/**
+ * @brief Executes error feedback upon incorrect fingerprint reading.
+ *
+ * Decrements the number of allowed attempts and provides feedback through
+ * the LCD and a buzzer tone. If no attempts remain, triggers a blocking alert loop.
+ */
+void wrongFingerPrint() {
+    if (opportunities > 0) {
+        substracFingerprintTry();
+    }
+    if (opportunities == 0) {
+        lcd.setCursor(0, 0);
+        lcd.print("No tries left");
+        unsigned long timeout = millis() + 10000; // The system is lock for 10 segs (Can be changed)
+        while (millis() < timeout) {
+            tone(BUZZER, 1000);
+            delay(300);
+            tone(BUZZER, 1500);
+            delay(300);
+            if (fingerprintSerialCom()) {
+                break;
+            }
+        }
+        opportunities = 5;
+        resetSystem();
+    }
 }
 
 /**
@@ -130,12 +181,14 @@ void printWrongMessage() {
  * @note This function uses delays (`delay(2000)`, `delay(5000)`) that may block execution.
  * @warning Make sure the fingerprint sensor is initialized and the finger library is properly set up.
  */
-void fingerprintSensor() {
+int fingerprintSensor() {
     uint8_t p = finger.getImage();
     if (p != FINGERPRINT_OK) {
         digitalWrite(ledRojo, LOW);
         Serial.println("No se pudo leer la huella. Intenta de nuevo.");
-    } else {
+        return -1;
+    } 
+    else {
         p = finger.image2Tz();
         if (p != FINGERPRINT_OK) {
             digitalWrite(ledRojo, LOW);
@@ -156,14 +209,16 @@ void fingerprintSensor() {
             delay(5000);
             lcd.clear();
             digitalWrite(ledVerde, LOW);
+            return 1;
         } 
         else {
-            printWrongMessage();
             Serial.println("Huella no reconocida.");
             digitalWrite(ledRojo, HIGH);
             delay(5000);
             digitalWrite(ledRojo, LOW);
+            wrongFingerPrint();
+            return 0;
         }
     }
-    delay(2000);
+    delay(1000);
 }

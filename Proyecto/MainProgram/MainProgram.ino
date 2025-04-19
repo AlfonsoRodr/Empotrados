@@ -19,6 +19,11 @@ void loop() {
     lcd.print("Put your Finger");
     delay(2000);
     lcd.clear();
-    fingerprintSensor();
+    while (fingerprintSensor() != 1) {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Put your Finger");
+      fingerprintSensor();
+    }
   }
 }

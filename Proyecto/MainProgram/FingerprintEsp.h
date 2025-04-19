@@ -15,6 +15,9 @@
 #define FINGERPRINTMODULE_H
 
 #include <Adafruit_Fingerprint.h>
+#include "PasswordManager.h"
+
+#define BUZZER 12  ///< Digital pin connected to the buzzer
 
 #if (defined(__AVR__) || defined(ESP8266)) && !defined(__AVR_ATmega2560__)
 #include <SoftwareSerial.h>
@@ -54,12 +57,41 @@ extern int ledVerde;
 void setupFingerprint();
 
 /**
+ * @brief Decreases the number of available attempts and gives user feedback.
+ *
+ * Updates the LCD to reflect a failed attempt and plays an alert tone.
+ */
+void substracFingerprintTry();
+
+/**
+ * @brief Handles serial input for external system reset command.
+ *
+ * Listens for incoming data over serial. If TBD is received, resets the system.
+ *
+ * @return `true` if a reset signal was received, `false` otherwise.
+ */
+bool fingerprintSerialCom();
+
+// TBD
+bool hasOpportunitiesRemaining();
+
+/**
+ * @brief Executes feedback for incorrect fingerprint reading.
+ *
+ * Decreases the number of remaining attempts, displays an error message, and 
+ * activates the buzzer for a brief tone to alert the user.
+ *
+ * @note Called automatically when fingerprint verification fails.
+ */
+void wrongFingerPrint();
+
+/**
  * @brief Performs a fingerprint scan and verifies the identity.
  *
  * This function captures an image from the fingerprint sensor,
  * converts it to a template, and attempts to match it with stored fingerprints.
  * It provides visual feedback using LEDs and LCD messages.
  */
-void fingerprintSensor();
+int fingerprintSensor();
 
 #endif // FINGERPRINTMODULE_H
