@@ -5,7 +5,7 @@
 - [Introducción](#introducción)
 - [Funcionamiento](#funcionamiento)
 - [Material Usado y Costes](#material-usado-y-costes)
-- [Diseño](#diseño)
+- [🔥 Diseño](#-diseño)
 - [Implementación](#implementación)
 - [Construcción](#construcción)
 - [Demostración](#demostración)
@@ -40,7 +40,24 @@
 **BREVE INTRODUCCIÓN DEL PROYECTO**
 
 ## Funcionamiento
-**AQUÍ SE VA A EXPLICAR EL FUNCIONAMIENTO DEL PROYECTO**
+El comportamiento de este sistema es bastante similar al de un sistema de seguridad común que se puede encontrar en el día a día. Para este proyecto, se decidió dividir el sistema en 2 bloques independientes, en uno se iba a encontrar toda la lógica y gestión de la caja fuerte, y en la otra, todo lo relacionado con la cámara y su pequeño sistema de refrigeración.
+
+### Bloque 1
+Se dispone de una matriz de botones 4x4 en el que el usuario tendrá 3 intentos para introducir la contraseña correcta; en caso de agotar todos los intentos, el sistema se bloqueará, y solo el dueño de la caja fuerte podrá habilitar nuevamente el sistema. En caso contrario, el usuario deberá de validar su huella dactilar haciendo uso del lector de huellas, como último factor de autenticación antes de poder acceder a la caja fuerte. Una vez la huella sea reconocida, la caja fuerte se abrirá desplegando consigo un brazo mecánico que tendrá cosnsigo el objeto que se guardó en dicha caja fuerte.
+
+A continuación, se muestra un diagrama de actividad que refleja el funcionamiento de este primer bloque de una forma más visual, para así complementar con lo dicho previamente.
+
+### Bloque 2
+Para añadir una mejor seguridad y proporcionar mayor información sobre lo que está sucediendo cuando un usuaro intenta interacturar con el sistema, se utilizó una cámara de seguridad cuyo funcionamiento es indepediente del bloque anterior. Esta cámara transmitirá en vivo y en directo todo lo que suceda mientras un usuario se encuentre interactuando con el sistema. Sin embargo, esta cámara tiene un ligero defecto y es el aumento de temperatura que puede sufrir mientras esté operativa, es por ello, que se decidió controlar dicha temperatura haciendo uso de un sensor de temperatura, que, tras superar una temperatura umbral, activaría un ventilador para enfriar un poco dicha cámara.
+
+A continuación, se muestra un diagrama de actividad que refleja el funcionamiento de este último bloque de una forma más visual, para así complementar con lo dicho previamente.
+
+>[!NOTE]
+> La transmisión en vivo ofrecida por la cámara, se puede ver introduciendo en cualquier navegador web, la IP que dicha cámara devuelve una vez esté correctamente operativa.
+
+> [!WARNING]
+> Es importante que usted tenga en cuenta que el ventilador que se usó para refrigerar la cámara, no es el más sofisticado ni potente que existe, es debido a ello que usted pueda apreciar que la temperatura de la cámara tarda un poco más de lo que debería en bajar.
+> Además, también es importante que usted tenga en cuenta que debido a que la cámara no es la más sofisticada que hay, es posible que la transmisión se aprecie a una calidad inferior a la deseada o que la imagen se pueda congelar. Esto como ya digo, sucede por la calidad de la cámara.
 
 ## Material Usado y Costes
 <table>
@@ -128,7 +145,7 @@
   </tbody>
 </table>
 
-## Diseño
+## 🔥 Diseño
 **AQUÍ SE VAN A METER LAS FOTOS DE LOS DIAGRAMAS DE CONEXIÓN**
 **ADEMÁS, SE HARÁN UNAS TABLAS MOSTRANDO LAS CONEXIONES DE CADA COMPOENTE PARA QUEA MÁS VISUAL**
 
