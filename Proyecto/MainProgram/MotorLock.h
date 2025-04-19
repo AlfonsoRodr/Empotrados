@@ -8,7 +8,7 @@
 #define SERVO_CLOSE 120
 
 
-void setUpServo();
+void setupServo();
 
 void closeServo();
 
