@@ -2,11 +2,13 @@
 #include "FingerprintEsp.h"
 #include "TemperatureFanController.h"
 #include <LiquidCrystal_I2C.h>
+#inlcude "MotorLock.h"
 
 void setup() {
   setupPasswordManager();
   setupFingerprint();
   setupTemperatureFan();
+  setupServo();
 }
 
 void loop() {
@@ -20,5 +22,7 @@ void loop() {
     delay(2000);
     lcd.clear();
     fingerprintSensor();
+    openServo();
+    
   }
 }
