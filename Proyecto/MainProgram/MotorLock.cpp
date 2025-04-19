@@ -2,7 +2,7 @@
 
 Servo servo;
 
-void setUpServo(){
+void setupServo(){
   servo.attach(3);
   servo.write(SERVO_CLOSE);
 }
