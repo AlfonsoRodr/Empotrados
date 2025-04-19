@@ -2,7 +2,7 @@
 #include "FingerprintEsp.h"
 #include "TemperatureFanController.h"
 #include <LiquidCrystal_I2C.h>
-#inlcude "MotorLock.h"
+#include "MotorLock.h"
 
 void setup() {
   setupPasswordManager();
