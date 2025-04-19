@@ -1,16 +1,16 @@
 # Grupo 16: TBD
 
 ## Tabla de Contenidos
-- [Participantes](#participantes)
-- [Introducción](#introducción)
-- [Funcionamiento](#funcionamiento)
-- [Material Usado y Costes](#material-usado-y-costes)
-- [🔥 Diseño](#-diseño)
-- [Implementación](#implementación)
-- [Construcción](#construcción)
-- [Demostración](#demostración)
+- [Participantes](#-participantes)
+- [Introducción](#-introducción)
+- [Funcionamiento](#-funcionamiento)
+- [Material Usado y Costes](#-material-usado-y-costes)
+- [Diseño](#-diseño)
+- [Implementación](#-implementación)
+- [Construcción](#-construcción)
+- [Demostración](#-demostración)
 
-## Participantes
+## 👥 Participantes
 <table>
   <thead>
     <th>Nombre</th>
@@ -36,10 +36,10 @@
   </tbody>
 </table>
 
-## Introducción
+## 🚀 Introducción
 **BREVE INTRODUCCIÓN DEL PROYECTO**
 
-## Funcionamiento
+## 🧠 Funcionamiento
 El comportamiento de este sistema es bastante similar al de un sistema de seguridad común que se puede encontrar en el día a día. Para este proyecto, se decidió dividir el sistema en 2 bloques independientes, en uno se iba a encontrar toda la lógica y gestión de la caja fuerte, y en la otra, todo lo relacionado con la cámara y su pequeño sistema de refrigeración.
 
 ### Bloque 1
@@ -47,10 +47,14 @@ Se dispone de una matriz de botones 4x4 en el que el usuario tendrá 3 intentos 
 
 A continuación, se muestra un diagrama de actividad que refleja el funcionamiento de este primer bloque de una forma más visual, para así complementar con lo dicho previamente.
 
+**INSERTAR DIAGRAMA**
+
 ### Bloque 2
 Para añadir una mejor seguridad y proporcionar mayor información sobre lo que está sucediendo cuando un usuaro intenta interacturar con el sistema, se utilizó una cámara de seguridad cuyo funcionamiento es indepediente del bloque anterior. Esta cámara transmitirá en vivo y en directo todo lo que suceda mientras un usuario se encuentre interactuando con el sistema. Sin embargo, esta cámara tiene un ligero defecto y es el aumento de temperatura que puede sufrir mientras esté operativa, es por ello, que se decidió controlar dicha temperatura haciendo uso de un sensor de temperatura, que, tras superar una temperatura umbral, activaría un ventilador para enfriar un poco dicha cámara.
 
 A continuación, se muestra un diagrama de actividad que refleja el funcionamiento de este último bloque de una forma más visual, para así complementar con lo dicho previamente.
+
+**INSERTAR DIAGRAMA**
 
 >[!NOTE]
 > La transmisión en vivo ofrecida por la cámara, se puede ver introduciendo en cualquier navegador web, la IP que dicha cámara devuelve una vez esté correctamente operativa.
@@ -59,7 +63,7 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
 > Es importante que usted tenga en cuenta que el ventilador que se usó para refrigerar la cámara, no es el más sofisticado ni potente que existe, es debido a ello que usted pueda apreciar que la temperatura de la cámara tarda un poco más de lo que debería en bajar.
 > Además, también es importante que usted tenga en cuenta que debido a que la cámara no es la más sofisticada que hay, es posible que la transmisión se aprecie a una calidad inferior a la deseada o que la imagen se pueda congelar. Esto como ya digo, sucede por la calidad de la cámara.
 
-## Material Usado y Costes
+## 📋 Material Usado y Costes
 <table>
   <thead>
     <th>Componente</th>
@@ -145,15 +149,103 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
   </tbody>
 </table>
 
-## 🔥 Diseño
-**AQUÍ SE VAN A METER LAS FOTOS DE LOS DIAGRAMAS DE CONEXIÓN**
-**ADEMÁS, SE HARÁN UNAS TABLAS MOSTRANDO LAS CONEXIONES DE CADA COMPOENTE PARA QUEA MÁS VISUAL**
+## 🧩 Diseño
+En esta sección, se mostrarán las conexiones realizadas para llevar a cabo este proyecto.
 
-## Implementación
+>[!NOTE]
+> Debido a que en Tinkercard no existen ciertos módulos, se mostrarán las conexiones respectoivas a dichos módulos en una tabla
+
+### Bloque 1
+**INSERTAR DIAGRAMA**
+
+### Sensor de Huella Dactilar
+<table>
+  <thead>
+    <th>Origen</th>
+    <th>Destino</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>5V</td>
+      <td>5V</td>
+    </tr>
+    <tr>
+      <td>TX</td>
+      <td>Pin Digital 2</td>
+    </tr>
+    <tr>
+      <td>RX</td>
+      <td>Pin Digital 3</td>
+    </tr>
+    <tr>
+      <td>GND</td>
+      <td>GND</td>
+    </tr>
+  </tbody>
+</table>
+
+### Pantalla LCD mediante Interfaz I2C
+>[!IMPORTANT]
+>A pesar de que Tinkercard si que tiene la pantalla LCD, no tiene la interfaz I2C que se utilizó para ahorrar cableado. La pantalla y la interfaz se conectaron de forma `paralela`, por lo que las conexiones que se mostrarán a continuación son en relación a la interfaz I2C.
+
+<table>
+  <thead>
+    <th>Origen</th>
+    <th>Destino</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>5V</td>
+      <td>5V</td>
+    </tr>
+    <tr>
+      <td>SCL</td>
+      <td>Pin Analógico 5</td>
+    </tr>
+    <tr>
+      <td>SDA</td>
+      <td>Pin Analógico 4</td>
+    </tr>
+    <tr>
+      <th>GND</th>
+      <th>GND</th>
+    </tr>
+  </tbody>
+</table>
+
+### Bloque 2
+**INSERTAR DIAGRAMA**
+
+### Sensor de Temperatura y Humedad DHT11
+<table>
+  <thead>
+    <th>Origen</th>
+    <th>Destino</th>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5V</th>
+      <th>5V</th>
+    </tr>
+    <tr>
+      <th>GND</th>
+      <th>GND</th>
+    </tr>
+    <tr>
+      <th>DATA</th>
+      <th>Pin Analógico 2</th>
+    </tr>
+  </tbody>
+</table>
+
+### Módulo ESP32-CAM
+Este módulo simplemente va conectado vía USB a la computadora.
+
+## 🧑‍💻 Implementación
 **AQUÍ SE VA A EXPLICAR COMO ESTÁ DISTRIBUIDO EL CÓDIGO, Y NO ESTOY SEGURO SI TAMBIÉN HARÍA FALTA METER EL CÓDIGO DE CADA PARTE**
 
-## Construcción
+## 🔧 Construcción
 **AQUÍ SE MENCIONARÁN LAS FASES EN LA QUE SE ORGANIZÓ EL PROYECTO PARA CONSTRUIR LA PARTE FÍSICA**
 
-## Demostración
+## 🧪 Demostración
 **AQUÍ VA A IR EL VIDEO DE DEMOSTRACIÓN**
