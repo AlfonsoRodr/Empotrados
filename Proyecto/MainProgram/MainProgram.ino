@@ -10,7 +10,7 @@ void setup() {
 }
 
 void loop() {
-  updateTemperatureFan();
+  updateTemperatureFan(); // IT IS POSSIBLE THAT IT WILL BE MOVED TO OTHER ARDUINO.
   lcd.setCursor(0, 0);
   lcd.print("Password:");
   if (handlePasswordInput() == 1) {

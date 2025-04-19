@@ -9,7 +9,6 @@
 #ifndef TEMPERATURE_FAN_CONTROLLER_H
 #define TEMPERATURE_FAN_CONTROLLER_H
 
-#include <Arduino.h>
 #include <DHT.h>
 
 // --- Sensor and fan pin definitions ---

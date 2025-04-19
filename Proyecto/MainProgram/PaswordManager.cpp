@@ -53,9 +53,51 @@ void setupPasswordManager() {
     lcd.backlight();
     lcd.clear();
     pinMode(BUZZER, OUTPUT);
-    pinMode(LED, OUTPUT);
     Serial.println("Sistema de contraseña listo.");
     memset(result, 0, sizeof(result));
+}
+
+/**
+ * @brief Resets the number of allowed password attempts.
+ *
+ * This function restores the `triesLeft` counter to its default value (3),
+ * allowing the user to retry password entry after a reset or success.
+ */
+void resetTries() {
+    triesLeft = 3;
+}
+
+/**
+ * @brief Clears the password input state.
+ *
+ * Resets the entered characters, clears the input buffer, and stops any buzzer tone.
+ */
+void resetPasswordState() {
+    memset(result, 0, sizeof(result));
+    counter = 0;
+    noTone(BUZZER);
+}
+
+/**
+ * @brief Clears and reinitializes the LCD display.
+ *
+ * Displays the default password input prompt on the first row of the LCD.
+ */
+void resetLCDScreen() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Password: ");
+}
+
+/**
+ * @brief Performs a complete reset of the password system.
+ *
+ * Resets attempt counter, password buffer, and LCD screen to their initial state.
+ */
+void resetSystem() {
+    resetTries();
+    resetPasswordState();
+    resetLCDScreen();
 }
 
 /**
@@ -90,7 +132,7 @@ void printPassword() {
 }
 
 /**
- * @author Alfonso Rodríguez.1
+ * @author Alfonso Rodríguez.
  * @brief Handles password submission and validation.
  * 
  * This function finalizes the input by null-terminating the password buffer,
@@ -189,7 +231,6 @@ void correctPassword() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Correct password!!");
-    digitalWrite(LED, HIGH);
     tone(BUZZER, 100);
     delay(300);
     noTone(BUZZER);
@@ -198,7 +239,48 @@ void correctPassword() {
 }
 
 /**
- * @author Héctor Gónzalez.
+ * @author Héctor González.
+ * @brief Reduces the remaining attempts and provides feedback.
+ *
+ * Decreases `triesLeft` by one, displays an error message, and activates
+ * a buzzer tone to signal an incorrect password attempt.
+ */
+void substractTry() {
+    triesLeft--;
+    lcd.setCursor(0, 0);
+    lcd.print("Wrong password");
+    lcd.setCursor(0, 1);
+    lcd.print("Tries left: ");
+    lcd.print(triesLeft);
+    delay(1000);
+    tone(BUZZER, 500);
+    delay(500);
+    noTone(BUZZER);
+    lcd.clear();
+}
+
+/**
+ * @author Alfonso Rodríguez.
+ * @brief Handles serial communication to reset the system remotely.
+ *
+ * Listens for incoming serial data. If the character 'R' is received,
+ * the system is reset and the function returns `true`.
+ *
+ * @return `true` if a reset command was received, `false` otherwise.
+ */
+bool serialCommunication() {
+    if (Serial.available()) {
+        char receivedSignal = Serial.read();
+        if (receivedSignal == 'R') {
+            resetSystem();
+            return true; // señal de que hay que salir del bucle
+        }
+    }
+    return false;
+}
+
+/**
+ * @author Héctor González.
  * @brief Executes error feedback upon incorrect password entry.
  *
  * Decrements the number of allowed attempts and provides feedback through
@@ -206,27 +288,21 @@ void correctPassword() {
  */
 void wrongPassword() {
     if (triesLeft > 0) {
-        triesLeft--;
-        lcd.setCursor(0, 0);
-        lcd.print("Wrong password");
-        lcd.setCursor(0, 1);
-        lcd.print("Tries left: ");
-        lcd.print(triesLeft);
-        delay(1000);
-        tone(BUZZER, 500);
-        delay(500);
-        noTone(BUZZER);
-        lcd.clear();
+        substractTry();
     }
-
     if (triesLeft == 0) {
         lcd.setCursor(0, 0);
         lcd.print("No tries left");
-        while (true) {
+        unsigned long timeout = millis() + 10000; // The system is lock for 10 segs (Can be changed)
+        while (millis() < timeout) {
             tone(BUZZER, 1000);
             delay(300);
             tone(BUZZER, 1500);
             delay(300);
+            if (serialCommunication()) {
+                break;
+            }
         }
+        resetSystem();
     }
 }

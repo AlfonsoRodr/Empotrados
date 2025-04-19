@@ -22,13 +22,11 @@
 #ifndef PASSWORD_MANAGER_H
 #define PASSWORD_MANAGER_H
 
-#include <Arduino.h>
 #include <Keypad.h>
 #include <LiquidCrystal_I2C.h>
 
 // --- Hardware Pin Definitions ---
 #define BUZZER 12  ///< Digital pin connected to the buzzer
-#define LED    11  ///< Digital pin connected to the status LED
 
 // --- External Variable Declarations ---
 extern LiquidCrystal_I2C lcd;       ///< Global LCD display instance
@@ -44,6 +42,34 @@ extern bool wrongIntroducedPsw;     ///< Flag indicating whether a wrong passwor
  * @note This function assumes that the LCD and keypad hardware are connected and initialized properly.
  */
 void setupPasswordManager();
+
+/**
+ * @brief Resets the number of allowed password attempts.
+ *
+ * Restores the attempt counter to its initial value (3), allowing for new attempts.
+ */
+void resetTries();
+
+/**
+ * @brief Clears the password input buffer and resets internal state.
+ *
+ * This function resets the current password entry, input counter, and buzzer state.
+ */
+void resetPasswordState();
+
+/**
+ * @brief Clears and reinitializes the LCD display.
+ *
+ * Displays the default password prompt message.
+ */
+void resetLCDScreen();
+
+/**
+ * @brief Performs a complete reset of the password system.
+ *
+ * Combines all individual reset routines (tries, password buffer, LCD).
+ */
+void resetSystem();
 
 /**
  * @brief Validates the entered password against a predefined value.
@@ -80,6 +106,22 @@ int handlePasswordInput();
  * @note Typically called by `handlePasswordInput()` or similar password verification logic.
  */
 void correctPassword();
+
+/**
+ * @brief Decreases the number of available attempts and gives user feedback.
+ *
+ * Updates the LCD to reflect a failed attempt and plays an alert tone.
+ */
+void substractTry();
+
+/**
+ * @brief Handles serial input for external system reset command.
+ *
+ * Listens for incoming data over serial. If 'R' is received, resets the system.
+ *
+ * @return `true` if a reset signal was received, `false` otherwise.
+ */
+bool serialCommunication();
 
 /**
  * @brief Executes feedback for incorrect password entry.
