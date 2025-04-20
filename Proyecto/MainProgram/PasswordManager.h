@@ -83,6 +83,43 @@ void resetSystem();
 bool verifyPassword(char result[32]);
 
 /**
+ * @brief Displays the current password input as masked characters.
+ *
+ * This function updates the second row of the LCD screen to show asterisks ('*')
+ * corresponding to the number of characters typed by the user so far, preserving
+ * confidentiality during input.
+ *
+ * @note Typically called from within `handlePasswordInput()` whenever a key is pressed.
+ */
+void printPassword();
+
+/**
+ * @brief Finalizes and validates the password entered by the user.
+ *
+ * Terminates the input string, sends it to the serial monitor, and clears the LCD.
+ * It then checks whether the input matches the predefined password.
+ * 
+ * - On success: calls `correctPassword()` and resets the attempt counter.
+ * - On failure: calls `wrongPassword()` and decreases the remaining attempts.
+ * 
+ * @return `1` if the password is correct,
+ *         `0` if the password is incorrect.
+ *
+ * @note Triggered by pressing the 'S' key on the keypad.
+ */
+int submitPassword();
+
+/**
+ * @brief Deletes the last character entered into the password buffer.
+ *
+ * This function removes the most recent character, updates the internal counter,
+ * and erases the corresponding asterisk from the LCD. The cursor is also repositioned.
+ *
+ * @note Triggered by pressing the 'D' key on the keypad.
+ */
+void deleteChar();
+
+/**
  * @brief Handles real-time keypad input and submission.
  *
  * Monitors user input via the keypad, displays the typed characters on the LCD,
@@ -119,7 +156,7 @@ void substractTry();
  *
  * Listens for incoming data over serial. If 'R' is received, resets the system.
  *
- * @return `true` if a reset signal was received, `false` otherwise.
+ * @return `true` if a reset signal was received, `false` otherwise
  */
 bool serialCommunication();
 

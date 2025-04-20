@@ -71,6 +71,13 @@ void setupFingerprint();
 void resetFingerOpportunities();
 
 /**
+ * @brief Displays a success message when the fingerprint is correctly recognized.
+ * 
+ * This function shows in the LCD screen the ID of the user whose fingerprint has been recognized.
+ */
+void printCorrectMessage();
+
+/**
  * @brief Decreases the number of available attempts and gives user feedback.
  *
  * Updates the LCD to reflect a failed attempt and plays an alert tone.
