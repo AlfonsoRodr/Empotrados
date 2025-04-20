@@ -77,7 +77,7 @@ void printData(float temperature, float humidity) {
 /**
  * @brief Reads temperature and humidity from the DHT11 sensor and controls the fan.
  *
- * If the temperature exceeds 25°C, the fan is turned on; otherwise, it remains off.
+ * If the temperature exceeds 30°C, the fan is turned on; otherwise, it remains off.
  * Sensor data and fan status are printed to the serial monitor.
  * If the sensor fails to provide valid readings, an error message is shown instead.
  */

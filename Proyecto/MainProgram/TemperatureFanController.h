@@ -59,7 +59,7 @@ void printData(float temperature, float humidity);
 /**
  * @brief Reads temperature and humidity, prints values, and controls the fan.
  * 
- * If temperature exceeds 25°C, the fan is turned on. Otherwise, it is turned off.
+ * If temperature exceeds 30°C, the fan is turned on. Otherwise, it is turned off.
  * Prints diagnostic messages to the serial monitor.
  */
 void updateTemperatureFan();
