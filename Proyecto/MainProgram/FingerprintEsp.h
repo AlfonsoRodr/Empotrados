@@ -57,6 +57,20 @@ extern int ledVerde;
 void setupFingerprint();
 
 /**
+ * @brief Resets the fingerprint verification attempt counter to its initial value.
+ * 
+ * This function restores the number of allowed fingerprint attempts, enabling the user
+ * to retry fingerprint verification after either a successful login, a system reset,
+ * or a temporary lockout due to multiple failed attempts.
+ * 
+ * It is typically called when the password is verified successfully or after the system
+ * has been reset through serial communication or timeout expiration.
+ * 
+ * @note This function works similarly to `resetTries()` from the password manager module.
+ */
+void resetFingerOpportunities();
+
+/**
  * @brief Decreases the number of available attempts and gives user feedback.
  *
  * Updates the LCD to reflect a failed attempt and plays an alert tone.
@@ -71,9 +85,6 @@ void substracFingerprintTry();
  * @return `true` if a reset signal was received, `false` otherwise.
  */
 bool fingerprintSerialCom();
-
-// TBD
-bool hasOpportunitiesRemaining();
 
 /**
  * @brief Executes feedback for incorrect fingerprint reading.

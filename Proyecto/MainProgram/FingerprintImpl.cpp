@@ -69,6 +69,18 @@ void setupFingerprint() {
 }
 
 /**
+ * @brief Resets the number of remaining fingerprint attempts to the maximum allowed.
+ * 
+ * This function sets the internal `opportunities` counter back to 5,
+ * which is the maximum number of fingerprint verification attempts allowed.
+ * It is typically called after a successful authentication or when the system resets,
+ * ensuring the user starts fresh with a full set of tries.
+ */
+void resetFingerOpportunities() {
+    opportunities = 5;
+}
+
+/**
  * @brief Displays a success message when a fingerprint is correctly recognized.
  *
  * This function clears the LCD and shows a message indicating that a fingerprint
@@ -132,10 +144,6 @@ bool fingerprintSerialCom() {
     return false;
 }
 
-bool hasOpportunitiesRemaining() {
-    return opportunities > 0;
-}
-
 /**
  * @brief Executes error feedback upon incorrect fingerprint reading.
  *
@@ -159,7 +167,7 @@ void wrongFingerPrint() {
                 break;
             }
         }
-        opportunities = 5;
+        resetFingerOpportunities();
         resetSystem();
     }
 }
@@ -199,6 +207,7 @@ int fingerprintSensor() {
 
         p = finger.fingerSearch();
         if (p == FINGERPRINT_OK) {
+            resetFingerOpportunities();
             digitalWrite(ledRojo, LOW);
             printCorrectMessage();
             Serial.print("Huella reconocida. ID: "); 

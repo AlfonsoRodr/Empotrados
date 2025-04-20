@@ -3,7 +3,7 @@
 Servo servo;
 
 void setupServo(){
-  servo.attach(3);
+  servo.attach(13); // LO PUSE AHÍ PORQUE EN EL 3 ESTÁ LA HUELLA, PERO LUEGO SE PONE EL NÚMERO DE PIN CORRESPONDIENTE.
   servo.write(SERVO_CLOSE);
 }
 

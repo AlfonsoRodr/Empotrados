@@ -15,5 +15,3 @@ void closeServo();
 void openServo();
 
 #endif
-
-

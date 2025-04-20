@@ -98,6 +98,7 @@ void resetSystem() {
     resetTries();
     resetPasswordState();
     resetLCDScreen();
+    handlePasswordInput();
 }
 
 /**
