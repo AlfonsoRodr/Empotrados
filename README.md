@@ -6,6 +6,7 @@
 - [Funcionamiento](#-funcionamiento)
 - [Material Usado y Costes](#-material-usado-y-costes)
 - [Diseño](#-diseño)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
 - [Implementación](#-implementación)
 - [Construcción](#-construcción)
 - [Demostración](#-demostración)
@@ -42,19 +43,67 @@
 ## 🧠 Funcionamiento
 El comportamiento de este sistema es bastante similar al de un sistema de seguridad común que se puede encontrar en el día a día. Para este proyecto, se decidió dividir el sistema en 2 bloques independientes, en uno se iba a encontrar toda la lógica y gestión de la caja fuerte, y en la otra, todo lo relacionado con la cámara y su pequeño sistema de refrigeración.
 
-### Bloque 1
-Se dispone de una matriz de botones 4x4 en el que el usuario tendrá 3 intentos para introducir la contraseña correcta; en caso de agotar todos los intentos, el sistema se bloqueará, y solo el dueño de la caja fuerte podrá habilitar nuevamente el sistema. En caso contrario, el usuario deberá de validar su huella dactilar haciendo uso del lector de huellas, como último factor de autenticación antes de poder acceder a la caja fuerte. Una vez la huella sea reconocida, la caja fuerte se abrirá desplegando consigo un brazo mecánico que tendrá cosnsigo el objeto que se guardó en dicha caja fuerte.
+### 🔒 Bloque 1
+Se dispone de una matriz de botones 4x4 en el que el usuario tendrá 3 intentos para introducir la contraseña correcta; en caso de agotar todos los intentos, el sistema se bloqueará, y solo el dueño de la caja fuerte podrá habilitar nuevamente el sistema. En caso contrario, el usuario deberá de validar su huella dactilar haciendo uso del lector de huellas, como último factor de autenticación antes de poder acceder a la caja fuerte; en donde tendrá un total de 5 intentos para colocar la huella correcta, en caso de agotar los intentos, el sistema se bloqueará. Una vez la huella sea reconocida, la caja fuerte se abrirá desplegando consigo un brazo mecánico que tendrá consigo el objeto que se guardó.
 
-A continuación, se muestra un diagrama de actividad que refleja el funcionamiento de este primer bloque de una forma más visual, para así complementar con lo dicho previamente.
-
-**INSERTAR DIAGRAMA**
-
-### Bloque 2
+### 📷❄️ Bloque 2
 Para añadir una mejor seguridad y proporcionar mayor información sobre lo que está sucediendo cuando un usuaro intenta interacturar con el sistema, se utilizó una cámara de seguridad cuyo funcionamiento es indepediente del bloque anterior. Esta cámara transmitirá en vivo y en directo todo lo que suceda mientras un usuario se encuentre interactuando con el sistema. Sin embargo, esta cámara tiene un ligero defecto y es el aumento de temperatura que puede sufrir mientras esté operativa, es por ello, que se decidió controlar dicha temperatura haciendo uso de un sensor de temperatura, que, tras superar una temperatura umbral, activaría un ventilador para enfriar un poco dicha cámara.
 
-A continuación, se muestra un diagrama de actividad que refleja el funcionamiento de este último bloque de una forma más visual, para así complementar con lo dicho previamente.
+### 📡 Desbloqueo del Sistema y Comunicación Serial
+Como se explicó previamente, una vez que se agotan todos los intentos disponibles (ya sea para ingresar la contraseña o verificar la huella dactilar), el sistema entra en un estado de bloqueo permanente. Sin embargo, existe un mecanismo especial para que el propietario pueda desbloquearlo: el uso de un control remoto infrarrojo (IR). Al presionar un botón específico en el control, se envía una señal que es captada por un receptor IR, lo cual permite al sistema salir del estado de bloqueo.
 
-**INSERTAR DIAGRAMA**
+Cabe destacar que la comunicación entre los componentes encargados de este proceso se realiza mediante `comunicación serial` entre dos microcontroladores Arduino. En este esquema, el Arduino `emisor` está conectado al receptor IR, siendo responsable de leer las señales del control remoto. Una vez capturada una señal, esta `se traduce a un carácter`, que es enviado a través del puerto serial al Arduino `receptor`. Este último, al recibir el carácter correspondiente, ejecuta la acción asociada, como por ejemplo desbloquear el sistema.
+
+>[!IMPORTANT]
+> Se considera que el mando IR únicamente lo tiene el dueño o alguien de confianza del dueño, en caso de pérdida o de que caiga en manos equivocadas, no nos hacemos responsables ya que cae de la responsabilidad del dueño quién tiene acceso a dicho control remoto.
+
+>[!IMPORTANT]
+> Hay funcionalidades del IR que su uso es únicamente para la presentación del proyecto, por cuestiones de agilizar la presentación. Es decir, dichas funcionalidades no estarán disponibles para el usuario final del sistema.
+
+A continuación, se presenta una tabla mostrando de una forma mñás visual lo mencionado previamente:
+<table>
+  <thead>
+    <th>Botón Pulsado</th>
+    <th>Señal Correspondiente (Dec)</th>
+    <th>Caracter que se Envía</th>
+    <th>Acción que realiza el Arduino Receptor</th>
+    <th>¿Uso único para la Presentación?</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>22</td>
+      <td>'R'</td>
+      <td>Resetea el sistema, volviendo al estado inicial.</td>
+      <td>NO</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>TBD</td>
+      <td>TBD</td>
+      <td>Omite la autenticación</td>
+      <td>SI</td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>TBD</td>
+      <td>TBD</td>
+      <td>Encender Ventilador</td>
+      <td>SI</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>TBD</td>
+      <td>TBD</td>
+      <td>Apagar Ventilador</td>
+      <td>SI</td>
+    </tr>
+  </tbody>
+</table>
+
+A continuación, se muestra un diagrama de actividad que refleja el funcionamiento del sistema de una forma más visual, para así complementar con lo dicho previamente.
+
+![Diagrama de Actividad Bloque 1](Proyecto/Diagrams/DiagramaActividad1.jpg)
 
 >[!NOTE]
 > La transmisión en vivo ofrecida por la cámara, se puede ver introduciendo en cualquier navegador web, la IP que dicha cámara devuelve una vez esté correctamente operativa.
@@ -184,35 +233,6 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
   </tbody>
 </table>
 
-### Pantalla LCD mediante Interfaz I2C
->[!IMPORTANT]
->A pesar de que Tinkercard si que tiene la pantalla LCD, no tiene la interfaz I2C que se utilizó para ahorrar cableado. La pantalla y la interfaz se conectaron de forma `paralela`, por lo que las conexiones que se mostrarán a continuación son en relación a la interfaz I2C.
-
-<table>
-  <thead>
-    <th>Origen</th>
-    <th>Destino</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td>5V</td>
-      <td>5V</td>
-    </tr>
-    <tr>
-      <td>SCL</td>
-      <td>Pin Analógico 5</td>
-    </tr>
-    <tr>
-      <td>SDA</td>
-      <td>Pin Analógico 4</td>
-    </tr>
-    <tr>
-      <th>GND</th>
-      <th>GND</th>
-    </tr>
-  </tbody>
-</table>
-
 ### Bloque 2
 **INSERTAR DIAGRAMA**
 
@@ -240,6 +260,9 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
 
 ### Módulo ESP32-CAM
 Este módulo simplemente va conectado vía USB a la computadora.
+
+## 📚 Estructura del Proyecto
+**INSERTAR DIAGRAMA DE CLASES PARA MOSTRAR LAS RELACIONES ENTRE ARCHIVOS**
 
 ## 🧑‍💻 Implementación
 **AQUÍ SE VA A EXPLICAR COMO ESTÁ DISTRIBUIDO EL CÓDIGO, Y NO ESTOY SEGURO SI TAMBIÉN HARÍA FALTA METER EL CÓDIGO DE CADA PARTE**
