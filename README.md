@@ -103,7 +103,7 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
 
 A continuación, se muestra un diagrama de actividad que refleja el funcionamiento del sistema de una forma más visual, para así complementar con lo dicho previamente.
 
-![Diagrama de Actividad Bloque 1](Diagrams/DiagramaActividad1.jpg)
+![Diagrama de Actividad Bloque 1](Proyecto/Diagrams/DiagramaActividad1.jpg)
 
 >[!NOTE]
 > La transmisión en vivo ofrecida por la cámara, se puede ver introduciendo en cualquier navegador web, la IP que dicha cámara devuelve una vez esté correctamente operativa.
@@ -229,35 +229,6 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
     <tr>
       <td>GND</td>
       <td>GND</td>
-    </tr>
-  </tbody>
-</table>
-
-### Pantalla LCD mediante Interfaz I2C
->[!IMPORTANT]
->A pesar de que Tinkercard si que tiene la pantalla LCD, no tiene la interfaz I2C que se utilizó para ahorrar cableado. La pantalla y la interfaz se conectaron de forma `paralela`, por lo que las conexiones que se mostrarán a continuación son en relación a la interfaz I2C.
-
-<table>
-  <thead>
-    <th>Origen</th>
-    <th>Destino</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td>5V</td>
-      <td>5V</td>
-    </tr>
-    <tr>
-      <td>SCL</td>
-      <td>Pin Analógico 5</td>
-    </tr>
-    <tr>
-      <td>SDA</td>
-      <td>Pin Analógico 4</td>
-    </tr>
-    <tr>
-      <th>GND</th>
-      <th>GND</th>
     </tr>
   </tbody>
 </table>
