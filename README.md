@@ -2,25 +2,17 @@
 
 ## Tabla de Contenidos
 - [Grupo 16: TBD](#grupo-16-tbd)
-  - [Tabla de Contenidos](#tabla-de-contenidos)
-  - [👥 Participantes](#-participantes)
-  - [📚 Librerías Necesarias](#-librerías-necesarias)
-  - [🚀 Introducción](#-introducción)
-  - [🧠 Funcionamiento](#-funcionamiento)
-    - [🔒 Bloque 1](#-bloque-1)
-    - [📷❄️ Bloque 2](#️-bloque-2)
-    - [📡 Desbloqueo del Sistema y Comunicación Serial](#-desbloqueo-del-sistema-y-comunicación-serial)
-  - [📋 Material Usado y Costes](#-material-usado-y-costes)
-  - [🧩 Diseño](#-diseño)
-    - [Bloque 1](#bloque-1)
-    - [Sensor de Huella Dactilar](#sensor-de-huella-dactilar)
-    - [Bloque 2](#bloque-2)
-    - [Sensor de Temperatura y Humedad DHT11](#sensor-de-temperatura-y-humedad-dht11)
-    - [Módulo ESP32-CAM](#módulo-esp32-cam)
-  - [📚 Estructura del Proyecto](#-estructura-del-proyecto)
-  - [🧑‍💻 Implementación](#-implementación)
-  - [🔧 Construcción](#-construcción)
-  - [🧪 Demostración](#-demostración)
+- [Tabla de Contenidos](#tabla-de-contenidos)
+- [Participantes](#-participantes)
+- [Librerías Necesarias](#-librerías-necesarias)
+- [Introducción](#-introducción)
+- [Funcionamiento](#-funcionamiento)
+- [Material Usado y Costes](#-material-usado-y-costes)
+- [Diseño](#-diseño)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Implementación](#-implementación)
+- [Construcción](#-construcción)
+- [Demostración](#-demostración)
 
 ## 👥 Participantes
 <table>
@@ -110,13 +102,6 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
       <td>TBD</td>
       <td>TBD</td>
       <td>Encender Ventilador</td>
-      <td>SI</td>
-    </tr>
-    <tr>
-      <td>-</td>
-      <td>TBD</td>
-      <td>TBD</td>
-      <td>Apagar Ventilador</td>
       <td>SI</td>
     </tr>
   </tbody>
@@ -212,6 +197,16 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
       <td>0</td>
     </tr>
     <tr>
+      <td>Set IR</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Botón</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+      <tr>
       <td><strong>TOTAL</strong></td>
       <td><strong>14</strong></td>
       <td><strong>59.82</strong></td>
@@ -223,10 +218,13 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
 En esta sección, se mostrarán las conexiones realizadas para llevar a cabo este proyecto.
 
 >[!NOTE]
-> Debido a que en Tinkercard no existen ciertos módulos, se mostrarán las conexiones respectoivas a dichos módulos en una tabla
+> Debido a que en Tinkercard no existen ciertos módulos, se mostrarán las conexiones respectivas a dichos módulos en una tabla.
 
 ### Bloque 1
-**INSERTAR DIAGRAMA**
+![Conexiones Bloque 1](Proyecto/Diagrams/Connections/Bloque1.png)
+
+>[!NOTE]
+> También se proporciona el diagrama eléctrico de este bloque, si desea consultarlo, haga click en este [enlace](Proyecto/Diagrams/Electric/Bloque1.pdf)
 
 ### Sensor de Huella Dactilar
 <table>
@@ -255,7 +253,10 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
 </table>
 
 ### Bloque 2
-**INSERTAR DIAGRAMA**
+![Conexiones Bloque 2](Proyecto/Diagrams/Connections/Bloque2.png)
+
+>[!NOTE]
+> También se proporciona el diagrama eléctrico de este bloque, si desea consultarlo, haga click en este [enlace](Proyecto/Diagrams/Electric/Bloque2.pdf)
 
 ### Sensor de Temperatura y Humedad DHT11
 <table>
@@ -274,7 +275,7 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
     </tr>
     <tr>
       <th>DATA</th>
-      <th>Pin Analógico 2</th>
+      <th>Pin Digital 5</th>
     </tr>
   </tbody>
 </table>
