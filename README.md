@@ -2,17 +2,17 @@
 
 ## Tabla de Contenidos
 - [Grupo 16: TBD](#grupo-16-tbd)
-  - [Tabla de Contenidos](#tabla-de-contenidos)
-  - [Participantes](#-participantes)
-  - [Librerías Necesarias](#-librerías-necesarias)
-  - [Introducción](#-introducción)
-  - [Funcionamiento](#-funcionamiento)
-  - [Material Usado y Costes](#-material-usado-y-costes)
-  - [Diseño](#-diseño)
-  - [Estructura del Proyecto](#-estructura-del-proyecto)
-  - [Implementación](#-implementación)
-  - [Construcción](#-construcción)
-  - [Demostración](#-demostración)
+- [Tabla de Contenidos](#tabla-de-contenidos)
+- [Participantes](#-participantes)
+- [Librerías Necesarias](#-librerías-necesarias)
+- [Introducción](#-introducción)
+- [Funcionamiento](#-funcionamiento)
+- [Material Usado y Costes](#-material-usado-y-costes)
+- [Diseño](#-diseño)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
+- [Implementación](#-implementación)
+- [Construcción](#-construcción)
+- [Demostración](#-demostración)
 
 ## 👥 Participantes
 <table>
