@@ -9,12 +9,12 @@ bool correctFinger = false;
 void setup() {
   setupPasswordManager();
   setupFingerprint();
-  //setupTemperatureFan();
+  setupTemperatureFan();
   setupServo();
 }
 
 void loop() {
-  //updateTemperatureFan(); // IT IS POSSIBLE THAT IT WILL BE MOVED TO OTHER ARDUINO.
+  updateTemperatureFan(); // IT IS POSSIBLE THAT IT WILL BE MOVED TO OTHER ARDUINO.
   lcd.setCursor(0, 0);
   lcd.print("Password:");
   if (handlePasswordInput() == 1) {
