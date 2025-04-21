@@ -1,16 +1,26 @@
 # Grupo 16: TBD
 
 ## Tabla de Contenidos
-- [Participantes](#-participantes)
-- [Librerías Necesarias](#-librerías-necesarias)
-- [Introducción](#-introducción)
-- [Funcionamiento](#-funcionamiento)
-- [Material Usado y Costes](#-material-usado-y-costes)
-- [Diseño](#-diseño)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Implementación](#-implementación)
-- [Construcción](#-construcción)
-- [Demostración](#-demostración)
+- [Grupo 16: TBD](#grupo-16-tbd)
+  - [Tabla de Contenidos](#tabla-de-contenidos)
+  - [👥 Participantes](#-participantes)
+  - [📚 Librerías Necesarias](#-librerías-necesarias)
+  - [🚀 Introducción](#-introducción)
+  - [🧠 Funcionamiento](#-funcionamiento)
+    - [🔒 Bloque 1](#-bloque-1)
+    - [📷❄️ Bloque 2](#️-bloque-2)
+    - [📡 Desbloqueo del Sistema y Comunicación Serial](#-desbloqueo-del-sistema-y-comunicación-serial)
+  - [📋 Material Usado y Costes](#-material-usado-y-costes)
+  - [🧩 Diseño](#-diseño)
+    - [Bloque 1](#bloque-1)
+    - [Sensor de Huella Dactilar](#sensor-de-huella-dactilar)
+    - [Bloque 2](#bloque-2)
+    - [Sensor de Temperatura y Humedad DHT11](#sensor-de-temperatura-y-humedad-dht11)
+    - [Módulo ESP32-CAM](#módulo-esp32-cam)
+  - [📚 Estructura del Proyecto](#-estructura-del-proyecto)
+  - [🧑‍💻 Implementación](#-implementación)
+  - [🔧 Construcción](#-construcción)
+  - [🧪 Demostración](#-demostración)
 
 ## 👥 Participantes
 <table>
@@ -114,7 +124,7 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
 
 A continuación, se muestra un diagrama de actividad que refleja el funcionamiento del sistema de una forma más visual, para así complementar con lo dicho previamente.
 
-![Diagrama de Actividad Bloque 1](Proyecto/Diagrams/DiagramaActividad1.jpg)
+![Diagrama de Actividad Bloque 1](Proyecto/Diagrams/Others/DiagramaActividad1.jpg)
 
 >[!NOTE]
 > La transmisión en vivo ofrecida por la cámara, se puede ver introduciendo en cualquier navegador web, la IP que dicha cámara devuelve una vez esté correctamente operativa.
