@@ -2,6 +2,7 @@
 
 ## Tabla de Contenidos
 - [Participantes](#-participantes)
+- [Librerías Necesarias](#-librerías-necesarias)
 - [Introducción](#-introducción)
 - [Funcionamiento](#-funcionamiento)
 - [Material Usado y Costes](#-material-usado-y-costes)
@@ -36,6 +37,16 @@
     </tr>
   </tbody>
 </table>
+
+## 📚 Librerías Necesarias
+Para el desarrollo de este proyecto, se hicieron uso de algunas librerías externas que es probable que no estén instaladas por defecto en su IDE de Arduino, a continuación se mencionarán dichas librerías:
+- Keypad.h
+- LiquidCrystal_I2C.h
+- IRremote.h
+- TaskScheduler.h
+- DHT.h
+- Adafruit_Fingerprint.h
+- Servo.h
 
 ## 🚀 Introducción
 **BREVE INTRODUCCIÓN DEL PROYECTO**
