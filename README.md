@@ -62,10 +62,10 @@ Se dispone de una matriz de botones 4x4 en el que el usuario tendrá 3 intentos 
 ### 📷❄️ Bloque 2
 Para añadir una mejor seguridad y proporcionar mayor información sobre lo que está sucediendo cuando un usuaro intenta interacturar con el sistema, se utilizó una cámara de seguridad cuyo funcionamiento es indepediente del bloque anterior. Esta cámara transmitirá en vivo y en directo todo lo que suceda mientras un usuario se encuentre interactuando con el sistema. Sin embargo, esta cámara tiene un ligero defecto y es el aumento de temperatura que puede sufrir mientras esté operativa, es por ello, que se decidió controlar dicha temperatura haciendo uso de un sensor de temperatura, que, tras superar una temperatura umbral, activaría un ventilador para enfriar un poco dicha cámara.
 
-### 📡 Desbloqueo del Sistema y Comunicación Serial
+### 📡 Personalización mediante IR y Comunicación Serial
 Como se explicó previamente, una vez que se agotan todos los intentos disponibles (ya sea para ingresar la contraseña o verificar la huella dactilar), el sistema entra en un estado de bloqueo permanente. Sin embargo, existe un mecanismo especial para que el propietario pueda desbloquearlo: el uso de un control remoto infrarrojo (IR). Al presionar un botón específico en el control, se envía una señal que es captada por un receptor IR, lo cual permite al sistema salir del estado de bloqueo.
 
-Cabe destacar que la comunicación entre los componentes encargados de este proceso se realiza mediante `comunicación serial` entre dos microcontroladores Arduino. En este esquema, el Arduino `emisor` está conectado al receptor IR, siendo responsable de leer las señales del control remoto. Una vez capturada una señal, esta `se traduce a un carácter`, que es enviado a través del puerto serial al Arduino `receptor`. Este último, al recibir el carácter correspondiente, ejecuta la acción asociada, como por ejemplo desbloquear el sistema.
+Cabe destacar que la comunicación entre los componentes encargados de este proceso se realiza mediante `comunicación serial` entre dos microcontroladores Arduino. En este esquema, el Arduino `emisor` está conectado al receptor IR, siendo responsable de leer las señales del control remoto. Una vez capturada una señal, esta `se traduce a un caracter`, que es enviado a través del puerto serial al Arduino `receptor`. Este último, al recibir el caracter correspondiente, ejecuta la acción asociada, como por ejemplo desbloquear el sistema.
 
 >[!IMPORTANT]
 > Se considera que el mando IR únicamente lo tiene el dueño o alguien de confianza del dueño, en caso de pérdida o de que caiga en manos equivocadas, no nos hacemos responsables ya que cae de la responsabilidad del dueño quién tiene acceso a dicho control remoto.
@@ -106,6 +106,9 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
     </tr>
   </tbody>
 </table>
+
+>[!IMPORTANT]
+> Inicialmente, el apagado del ventilador también iba a ser controlado mediante IR. Sin embargo, una vez que el motor DC que alimenta el ventilador se encuentra encendido, el receptor IR deja de recibir correctamente las señales enviadas por el control remoto. Esto se debe al `ruido eléctrico`, también conocido como `interferencia electromagnética (EMI)` generado por el motor, el cual impide que las señales IR sean leídas de forma adecuada. Como resultado, se optó por controlar el apagado del ventilador mediante un `botón`.
 
 A continuación, se muestra un diagrama de actividad que refleja el funcionamiento del sistema de una forma más visual, para así complementar con lo dicho previamente.
 
@@ -168,7 +171,7 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
     </tr>
     <tr>
       <td>Resistencias 1K</td>
-      <td>TBD</td>
+      <td>4</td>
       <td>0</td>
     </tr>
     <tr>
@@ -208,7 +211,7 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
     </tr>
       <tr>
       <td><strong>TOTAL</strong></td>
-      <td><strong>14</strong></td>
+      <td><strong>20</strong></td>
       <td><strong>59.82</strong></td>
     </tr>
   </tbody>
@@ -283,8 +286,16 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
 ### Módulo ESP32-CAM
 Este módulo simplemente va conectado vía USB a la computadora.
 
+Finalmente, las conexiones del sistema en su totalidad tiene el siguiente aspecto:
+![Conexiones Sistema Entero](Proyecto/Diagramas/Connections/Sistema.png)
+
+>[!NOTE]
+> También se proporciona el diagrama eléctrico del sistema, si desea consultarlo, haga click en este [enlace](Proyecto/Diagrams/Electric/Sistema.pdf)
+
 ## 📚 Estructura del Proyecto
-**INSERTAR DIAGRAMA DE CLASES PARA MOSTRAR LAS RELACIONES ENTRE ARCHIVOS**
+A continuación, se describirá la estructura del proyecto mediante un `diagrama de clases`, especificando la organización modular del código, la responsabilidad funcional de cada archivo fuente y la forma en que los distintos componentes interactúan entre sí dentro del sistema.
+
+![Diagrama de Clases](Proyecto/Diagrams/Others/DigClases.jpg)
 
 ## 🧑‍💻 Implementación
 **AQUÍ SE VA A EXPLICAR COMO ESTÁ DISTRIBUIDO EL CÓDIGO, Y NO ESTOY SEGURO SI TAMBIÉN HARÍA FALTA METER EL CÓDIGO DE CADA PARTE**
