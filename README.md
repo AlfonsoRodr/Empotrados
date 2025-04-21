@@ -1,8 +1,6 @@
 # Grupo 16: TBD
 
 ## Tabla de Contenidos
-- [Grupo 16: TBD](#grupo-16-tbd)
-- [Tabla de Contenidos](#tabla-de-contenidos)
 - [Participantes](#-participantes)
 - [Librerías Necesarias](#-librerías-necesarias)
 - [Introducción](#-introducción)
