@@ -291,12 +291,221 @@ Finalmente, las conexiones del sistema en su totalidad tiene el siguiente aspect
 > También se proporciona el diagrama eléctrico del sistema, si desea consultarlo, haga click en este [enlace](Proyecto/Diagrams/Electric/Sistema.pdf)
 
 ## 📚 Estructura del Proyecto
-A continuación, se describirá la estructura del proyecto mediante un `diagrama de clases`, especificando la organización modular del código, la responsabilidad funcional de cada archivo fuente y la forma en que los distintos componentes interactúan entre sí dentro del sistema.
+A continuación, se describirá la estructura del proyecto, especificando la organización modular del código, la responsabilidad funcional de cada archivo fuente y la forma en que los distintos componentes interactúan entre sí dentro del sistema.
+
+>[!NOTE]
+> Tenga en cuenta que a pesar de que solo se haga mención al nombre del archivo como tal, cada uno de los archivos tiene su correspondiete interfaz (.h) y su implementación (.cpp)
+
+<table>
+  <thead>
+    <th>Nombre del Archivo</th>
+    <th>Responsabilidad</th>
+    <th>Archivos con los que se relaciona</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MainProgram.ino</td>
+      <td>Es el archivo principal del proyecto. Es donde se realiza la ejecución del software</td>
+      <td>PasswordManager, Fingerprint, MotorLock</td>
+    </tr>
+    <tr>
+      <td>PasswordManager</td>
+      <td>Gestiona la interacción con la matriz de botones, verificando si la contraseña introducida es correcta</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>Fingerprint</td>
+      <td>Gestiona el segundo y último factor de autenticación del sistema, mediante el sensor de huella dactilar</td>
+      <td>PasswordManager</td>
+    </tr>
+    <tr>
+      <td>MotorLock</td>
+      <td>Se encarga de gestionar el motor que opera el pestillo de la caja fuerte</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>RemoteControl.ino</td>
+      <td>Archivo .ino del segundo Arduino (emisor). Se encarga de recibir las señales IR para luego enviarlas mediante comunicación serial al Arduino receptor. También, se encarga de controlar el ventilador que tiene el sistema si la temperatura de la cámara supera cierto umbral</td>
+      <td>TemperatureFanController</td>
+    </tr>
+    <tr>
+      <td>TemperatureFanController</td>
+      <td>Es el sistema de refrigeración de la cámara. Se encarga de medir la temperatura del módulo ESP32-CAM, y al superar cierto umbral, activa el ventilador</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>CameraWebServer</td>
+      <td>Sketch extraído de los ejemplos de Arduino, que se encarga de la operatibilidad de la cámara, mostrando la dirección IP accesible vía web donde se podrá ver la transmisión en vivo.</td>
+      <td>NA</td>
+    </tr>
+  </tbody>
+</table>
+
+A continuación, se muestra un `diagrama de clases` para reflejar de una forma más visual lo mencionado con anterioridad.
 
 ![Diagrama de Clases](Proyecto/Diagrams/Others/DigClases.jpg)
 
 ## 🧑‍💻 Implementación
-**AQUÍ SE VA A EXPLICAR COMO ESTÁ DISTRIBUIDO EL CÓDIGO, Y NO ESTOY SEGURO SI TAMBIÉN HARÍA FALTA METER EL CÓDIGO DE CADA PARTE**
+En esta sección se mostrará la implementación de cada uno de los archivos mencionados en la sección anterior.
+**IN PROGRESS**
+
+### MainProgram
+````cpp
+````
+
+### PasswordManager
+````cpp
+````
+
+### Fingerprint
+````cpp
+````
+
+### MotorLock
+````cpp
+````
+
+### RemoteControl
+````cpp
+````
+
+### TemperatureFanController
+````cpp
+/**
+ * @file TemperatureFanController.cpp
+ * @author Alfonso Rodríguez.
+ * @brief Implementation file for temperature and fan control using a DHT11 sensor.
+ */
+
+#include "TemperatureFanController.h"
+
+// Create the DHT sensor object
+DHT dht(DHTPIN, DHTTYPE);
+
+bool manualOverride = false;
+ 
+/**
+ * @brief Initializes serial communication, the DHT sensor, and fan control pin.
+ *
+ * This function sets up the hardware required for temperature monitoring.
+ * It begins the serial interface, initializes the DHT11 sensor, and configures
+ * the fan control pin as an output, starting in the OFF state.
+ */
+void setupTemperatureFan() {
+  Serial.begin(9600);
+  dht.begin();
+ 
+  pinMode(FAN_PIN, OUTPUT);
+  digitalWrite(FAN_PIN, LOW); // Ensure fan is off at startup
+}
+
+/**
+ * @brief Checks if the given temperature exceeds the predefined threshold.
+ *
+ * This function compares the provided temperature with the threshold value (TEMPERATURE_TRESHOLD).
+ * If the temperature is higher than the threshold, it returns true; otherwise, it returns false.
+ *
+ * @param temperature The current temperature value.
+ * @return A boolean value indicating whether the temperature exceeds the threshold.
+ */
+bool exceededTreshold(float temperature) {
+  return temperature > TEMPERATURE_TRESHOLD;
+}
+
+/**
+ * @brief Controls the activation of the fan based on the current temperature.
+ * This function checks if the current temperature exceeds the predefined threshold.
+ * If it does, the fan is turned on, and a message is printed to the serial monitor.
+ * If the temperature is below the threshold, the fan is turned off, and a message is printed to the serial monitor.
+ * The fan's state is controlled via the FAN_PIN, and the fan's status is communicated via the serial monitor.
+ *
+ * @param temperature is the temperature that has been read.
+ */
+void fanActivation(float temperature) {
+  if (manualOverride) {
+    return;
+  }
+  if (exceededTreshold(temperature)) {
+    digitalWrite(FAN_PIN, HIGH);
+    Serial.println("Fan ON (Auto)");
+  } 
+  else {
+    digitalWrite(FAN_PIN, LOW);
+    Serial.println("Fan OFF (Auto)");
+  }
+}
+
+/**
+ * @brief Manually turns on the fan and overrides automatic control.
+ *
+ * This function sets the fan to the ON state regardless of the current temperature.
+ * It enables manual override, preventing automatic temperature-based control
+ * from modifying the fan state until manual override is disabled.
+ */
+void turnOnFan() {
+  manualOverride = true;
+  digitalWrite(FAN_PIN, HIGH);
+  Serial.println("Fan ON (Manual)");
+}
+
+/**
+ * @brief Manually turns off the fan and overrides automatic control.
+ *
+ * This function sets the fan to the OFF state regardless of the current temperature.
+ * It enables manual override, preventing automatic temperature-based control
+ * from modifying the fan state until manual override is disabled.
+ */
+void turnOffFan() {
+  if (digitalRead(BUTTON) == HIGH) {
+    if (digitalRead(FAN_PIN) == HIGH) {
+      manualOverride = false;
+    }
+    else {
+      manualOverride = true;
+    }
+    Serial.println("Boton Presionado");
+    digitalWrite(FAN_PIN, LOW);
+    Serial.println("Fan OFF (Manual)");
+  }
+}
+
+/**
+ * @brief Prints the current temperature and humidity data to the serial monitor.
+ * This function outputs the current temperature and humidity readings to the serial monitor,
+ * formatted as "Temperature: <value> °C | Humidity: <value> %".
+ * The information helps to monitor the environment and assess the performance of the system.
+ *
+ * @param temperature is the temperature that has been read.
+ * @param humidity is the humidity that has been read.
+ */
+void printData(float temperature, float humidity) {
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.print(" °C  |  Humidity: ");
+  Serial.print(humidity);
+  Serial.println(" %");
+}
+ 
+/**
+ * @brief Reads temperature and humidity from the DHT11 sensor and controls the fan.
+ *
+ * If the temperature exceeds 30°C, the fan is turned on; otherwise, it remains off.
+ * Sensor data and fan status are printed to the serial monitor.
+ * If the sensor fails to provide valid readings, an error message is shown instead.
+ */
+void updateTemperatureFan() {
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();
+ 
+  // Validate readings
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println("Failed to read from DHT11 sensor!");
+    return;
+  }
+  printData(temperature, humidity);
+  fanActivation(temperature);
+} 
+````
 
 ## 🔧 Construcción
 **AQUÍ SE MENCIONARÁN LAS FASES EN LA QUE SE ORGANIZÓ EL PROYECTO PARA CONSTRUIR LA PARTE FÍSICA**
