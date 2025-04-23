@@ -1,34 +1,27 @@
 /**
  * @file RemoteControl.ino
- * @brief Arduino sketch for receiving IR signals and controlling a fan system via serial and IR input.
+ * @brief Main controller for IR signal handling, temperature monitoring, and I2C communication.
  *
- * This sketch uses the IRremote library to receive signals from an infrared remote control.
- * It is designed to interface with a fan control system that operates automatically or via manual override.
- * Depending on the IR code received, the system can turn the fan on manually, off manually, or remain under automatic control.
+ * This sketch uses IR remote signals to control different functionalities,
+ * such as toggling a fan, unlocking a system via I2C, and bypassing authentication.
+ * It also periodically reads temperature values and controls a fan accordingly.
  *
- * @details
- * - Uses an IR receiver module connected to digital pin 2.
- * - Periodically checks for IR signals and temperature/humidity data using TaskScheduler.
- * - Handles specific IR codes:
- *   - Code 22 (Button '0'): Unlocks the system by sending the character 'R' to the receiver Arduino.
- *   - Code 12 (Button '1'): Bypass the authentication process by sending the character 'O' to the receiver Arduino.
- *   - Code 21 (Button '+'): Activates the fan manually.
- * - Designed for use in a system with serial communication with 2 Arduino setups.
- * - Integrates with a DHT11 sensor and fan controller defined in `TemperatureFanController.h`.
- *
- * @note Initially, the fan was supposed to be turned off using the IR switch; however, due to electrical interference caused by the fan's DC motor 
- * when it is turned on, the IR signals are not read, so the proposed solution is to turn the fan off with a button.
- * @author Alfonso Rodríguez.
- * @date 2025-04-19
+ * @author 
+ * Alfonso Rodríguez.
+ * @date 2025-04-23
  */
 
 #include <TaskScheduler.h>
 #include <IRremote.h>
+#include <Wire.h>
 #include "TemperatureFanController.h"
 
 // === IR setup ===
 const int RECEPTOR_IR_PIN = 2;
 IRrecv irrecv(RECEPTOR_IR_PIN); // IR receiver object instance.
+
+// === I2C setup ===
+const byte RECEPTOR_I2C_ADDRESS = 8; // Asegúrate que este es el mismo en el Arduino receptor.
 
 // === Scheduler & Tasks ===
 Scheduler runner;
@@ -41,6 +34,7 @@ Task taskTemp(2000, TASK_FOREVER, &readTempAndControl); // Every 2 sec
 
 void setup() {
   Serial.begin(9600);
+  Wire.begin();  // Initialize the I2C as a Master.
   irrecv.enableIRIn();  // Initialize the IR receiver.
   setupTemperatureFan(); // Initialize DHT and fan
   runner.init(); // Initialize the tasker.
@@ -55,50 +49,46 @@ void loop() {
 }
 
 /**
- * @brief Checks for IR input and handles fan control based on received codes.
- *
- * This function is called periodically, and managed certain operations with the IR set.
- * It reads the followings IR codes:
- * - If code 22 it will send the 'R' character via serial communication to the receiver Arduino, which will unlock the system.
- * - If code 12 is received, the fan is manually turned ON.
- * - If code 21 it will send the 'O' character via serial communciation to the receiver Arduino, which wll skip the authentication process.
- *
- * @note As mentioned above, turnOffFan() is a method that manages turning off the fan with the activation of a button. 
- * This method is part of the TemperatureFanController file.
+ * @brief Checks for incoming IR signals and acts accordingly.
+ * 
+ * IR Remote Commands:
+ * - Command 22: Sends 'F' via I2C to unlock system.
+ * - Command 12: Sends 'C' via I2C to close motor lock.
+ * - Command 24: Sends 'S' via I2C to skip authentication.
+ * - Command 21: Turns the fan ON manually.
  */
 void checkIR() {
   turnOffFan(); // If the button is pressed, the fan will turn off.
   if (irrecv.decode()) {
-    unsigned long value = irrecv.decodedIRData.command;  // Obtain the IR code, and transform it into a decimal format.
-    Serial.print("Code: ");
+    unsigned long value = irrecv.decodedIRData.command;
     Serial.println(value);
 
-    if (value == 22) {
-      Serial.println("Boton 0");
-      //Serial.write("R");  // Unlocks the system.
+    if (value == 22) { // Button: '0'
+      Wire.beginTransmission(RECEPTOR_I2C_ADDRESS);
+      Wire.write('F');  // Unlock the system.
+      Wire.endTransmission();
     }
-    else if (value == 12) {
-      Serial.println("Boton 1");
-      //Serial.write("A"); // Skip the authentication process.
+    else if (value == 12) { // Button: '1'
+      Wire.beginTransmission(RECEPTOR_I2C_ADDRESS);
+      Wire.write('C');  // Close the Motor.
+      Wire.endTransmission();
     }
-    else if (value == 21) {
-      Serial.println("Boton +");
-      turnOnFan();
-      //Serial.write("D");
+    else if (value == 24) { // Button: '2'
+      Wire.beginTransmission(RECEPTOR_I2C_ADDRESS);
+      Wire.write('S');  // Skip Authentication.
+      Wire.endTransmission();
+    }
+    else if (value == 21) { // Button: '+'
+      turnOnFan();  // Fan ON manually
     }
     irrecv.resume();  // Resume listening for the next IR signal.
   }
 }
 
 /**
- * @brief Reads temperature and humidity, and updates fan state accordingly.
- *
- * This function is called every 2 seconds to:
- * - Read temperature and humidity from the DHT11 sensor.
- * - Print the readings to the Serial monitor.
- * - Automatically turn the fan ON/OFF based on temperature threshold, unless a manual override is active.
- *
- * @see TemperatureFanController
+ * @brief Reads temperature and controls the fan based on thresholds.
+ * 
+ * @see TemperatureFanController module.
  */
 void readTempAndControl() {
   updateTemperatureFan();

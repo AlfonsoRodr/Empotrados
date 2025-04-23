@@ -22,7 +22,9 @@
 #ifndef PASSWORD_MANAGER_H
 #define PASSWORD_MANAGER_H
 
+#include "I2CSignalHandler.h"
 #include <Keypad.h>
+#include <SoftwareSerial.h>
 #include <LiquidCrystal_I2C.h>
 
 // --- Hardware Pin Definitions ---
@@ -31,7 +33,7 @@
 // --- External Variable Declarations ---
 extern LiquidCrystal_I2C lcd;       ///< Global LCD display instance
 extern int triesLeft;               ///< Number of remaining password attempts
-extern bool wrongIntroducedPsw;     ///< Flag indicating whether a wrong password was introduced
+extern bool wrongIntroducedPsw;    ///< Flag indicating whether a wrong password was introduced 
 
 /**
  * @brief Initializes the password system and associated hardware.
@@ -150,15 +152,6 @@ void correctPassword();
  * Updates the LCD to reflect a failed attempt and plays an alert tone.
  */
 void substractTry();
-
-/**
- * @brief Handles serial input for external system reset command.
- *
- * Listens for incoming data over serial. If 'R' is received, resets the system.
- *
- * @return `true` if a reset signal was received, `false` otherwise
- */
-bool serialCommunication();
 
 /**
  * @brief Executes feedback for incorrect password entry.

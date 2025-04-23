@@ -3,19 +3,17 @@
  * @author Raúl Sánchez.
  * @brief Header file for controlling a servo motor used as a lock mechanism.
  *
- * This module provides basic functions to initialize, open, and close a servo motor
- * that acts as a locking mechanism. It uses the Arduino Servo library to manage
- * servo operations.
+ * This module provides basic functions to initialize, open, and close a servo motor that acts as a locking mechanism.
  */
 
 #ifndef MOTOR_LOCK_H
 #define MOTOR_LOCK_H
 
+#include "I2CSignalHandler.h"
 #include <Servo.h>
 
 #define SERVO_OPEN -90
 #define SERVO_CLOSE 120
-#define SERVO_PIN 13
 
 /**
  * @brief Initializes the servo motor.

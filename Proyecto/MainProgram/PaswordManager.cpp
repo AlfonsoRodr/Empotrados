@@ -15,7 +15,6 @@
  * 
  * @date 2025-04-03
  */
-
 #include "PasswordManager.h"
 
 // --- Keypad Configuration ---
@@ -23,7 +22,7 @@ const byte ROWS = 4;
 const byte COLS = 4;
 char keys[ROWS][COLS] = { 
   {'H', 'O', 'L', 'A'},
-  {'P', 'U', 'T', 'E'},
+  {'1', '2', 'T', 'E'},
   {'O', '1', '9', 'C'},
   {'*', '0', 'D', 'S'}  // 'S' is used to submit the password and 'D' to delete a character
 };
@@ -37,18 +36,21 @@ LiquidCrystal_I2C lcd(0x3f, 16, 2);
 int triesLeft = 3;
 bool wrongIntroducedPsw = true;
 
-const char password[7] = "HOLAPU";  ///< Predefined 6-character password
+const char password[7] = "HOLA12";  ///< Predefined 6-character password
 int counter = 0;                   ///< Tracks number of typed characters
 char result[32];                   ///< Buffer to store entered password
 
 /**
  * @brief Initializes the password system hardware and state.
  *
- * Sets up the LCD display, buzzer, LED, and serial communication.
+ * Sets up the LCD display, buzzer, LED, serial communication and the I2C Communication Handler.
  * Also initializes the password buffer for user input.
+ *
+ * @see I2CCommunication module.
  */
 void setupPasswordManager() {
     Serial.begin(9600);
+    setupSignalHandler(); // Initialize the I2C Handler.
     lcd.init();
     lcd.backlight();
     lcd.clear();
@@ -243,7 +245,7 @@ void correctPassword() {
  * @author Héctor González.
  * @brief Reduces the remaining attempts and provides feedback.
  *
- * Decreases `triesLeft` by one, displays an error message, and activates
+ * Decreases triesLeft by one, displays an error message, and activates
  * a buzzer tone to signal an incorrect password attempt.
  */
 void substractTry() {
@@ -261,31 +263,14 @@ void substractTry() {
 }
 
 /**
- * @author Alfonso Rodríguez.
- * @brief Handles serial communication to reset the system remotely.
- *
- * Listens for incoming serial data. If the character 'R' is received,
- * the system is reset and the function returns `true`.
- *
- * @return `true` if a reset command was received, `false` otherwise.
- */
-bool serialCommunication() {
-    if (Serial.available()) {
-        char receivedSignal = Serial.read();
-        if (receivedSignal == 'R') {
-            resetSystem();
-            return true; // señal de que hay que salir del bucle
-        }
-    }
-    return false;
-}
-
-/**
  * @author Héctor González.
+ * @author Alfonso Rodríguez.
  * @brief Executes error feedback upon incorrect password entry.
  *
  * Decrements the number of allowed attempts and provides feedback through
  * the LCD and a buzzer tone. If no attempts remain, triggers a blocking alert loop.
+ *
+ * @note It will unlock the system manually if the correct IR signal is received.
  */
 void wrongPassword() {
     if (triesLeft > 0) {
@@ -294,13 +279,14 @@ void wrongPassword() {
     if (triesLeft == 0) {
         lcd.setCursor(0, 0);
         lcd.print("No tries left");
-        unsigned long timeout = millis() + 10000; // The system is lock for 10 segs (Can be changed)
+        unsigned long timeout = millis() + 10000; // The system is lock for 10 segs.
         while (millis() < timeout) {
             tone(BUZZER, 1000);
             delay(300);
             tone(BUZZER, 1500);
             delay(300);
-            if (serialCommunication()) {
+            if (isPasswordResetRequested()) {
+                clearSignalFlag(); // Reset the Signal.
                 break;
             }
         }

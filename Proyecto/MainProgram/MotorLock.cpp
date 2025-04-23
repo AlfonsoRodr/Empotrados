@@ -13,10 +13,13 @@ Servo servo;
 /**
  * @brief Initializes the servo motor.
  *
- * Attaches the servo to the specified pin and sets it to the locked position.
+ * Attaches the servo to the specified pin and sets it to the locked position and initialize the I2C communication handler.
+ *
+ * @see I2CCommunication module.
  */
 void setupServo(){
-  servo.attach(SERVO_PIN);
+  setupSignalHandler();
+  servo.attach(14);
   servo.write(SERVO_CLOSE);
 }
 
@@ -29,7 +32,13 @@ void closeServo(){
 
 /**
  * @brief Unlocks the mechanism by moving the servo to the open position.
+ * 
+ * @note It will lock again the mechanism if the correct IR signal is received.
  */
 void openServo(){
   servo.write(SERVO_OPEN);
+  if (isMotorLockCloseRequested()) {
+    clearSignalFlag();  // Reset the signal.
+    closeServo();
+  }
 }
