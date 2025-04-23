@@ -222,10 +222,10 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
 > Debido a que en Tinkercard no existen ciertos módulos, se mostrarán las conexiones respectivas a dichos módulos en una tabla.
 
 ### Bloque 1
-![Conexiones Bloque 1](Proyecto/Diagrams/Connections/Bloque1.png)
+![Conexiones Bloque 1](Proyecto/Diagrams/Connections/Bloque1Con.png)
 
 >[!NOTE]
-> También se proporciona el diagrama eléctrico de este bloque, si desea consultarlo, haga click en este [enlace](Proyecto/Diagrams/Electric/Bloque1.pdf)
+> También se proporciona el diagrama eléctrico de este bloque, si desea consultarlo, haga click en este [enlace](Proyecto/Diagrams/Electric/Bloque1Elec.pdf)
 
 ### Sensor de Huella Dactilar
 <table>
