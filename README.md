@@ -60,16 +60,20 @@ Se dispone de una matriz de botones 4x4 en el que el usuario tendrá 3 intentos 
 ### 📷❄️ Bloque 2
 Para añadir una mejor seguridad y proporcionar mayor información sobre lo que está sucediendo cuando un usuaro intenta interacturar con el sistema, se utilizó una cámara de seguridad cuyo funcionamiento es indepediente del bloque anterior. Esta cámara transmitirá en vivo y en directo todo lo que suceda mientras un usuario se encuentre interactuando con el sistema. Sin embargo, esta cámara tiene un ligero defecto y es el aumento de temperatura que puede sufrir mientras esté operativa, es por ello, que se decidió controlar dicha temperatura haciendo uso de un sensor de temperatura, que, tras superar una temperatura umbral, activaría un ventilador para enfriar un poco dicha cámara.
 
-### 📡 Personalización mediante IR y Comunicación Serial
+### 📡 Gestión de IR y Comunicaicón mediante I2C
 Como se explicó previamente, una vez que se agotan todos los intentos disponibles (ya sea para ingresar la contraseña o verificar la huella dactilar), el sistema entra en un estado de bloqueo permanente. Sin embargo, existe un mecanismo especial para que el propietario pueda desbloquearlo: el uso de un control remoto infrarrojo (IR). Al presionar un botón específico en el control, se envía una señal que es captada por un receptor IR, lo cual permite al sistema salir del estado de bloqueo.
 
-Cabe destacar que la comunicación entre los componentes encargados de este proceso se realiza mediante `comunicación serial` entre dos microcontroladores Arduino. En este esquema, el Arduino `emisor` está conectado al receptor IR, siendo responsable de leer las señales del control remoto. Una vez capturada una señal, esta `se traduce a un caracter`, que es enviado a través del puerto serial al Arduino `receptor`. Este último, al recibir el caracter correspondiente, ejecuta la acción asociada, como por ejemplo desbloquear el sistema.
+**CAMBIAR ESTE PÁRRAFO**
+Cabe destacar que la comunicación entre los componentes encargados de este proceso se realiza mediante `I2C` entre dos microcontroladores Arduino. En este esquema, el Arduino `emisor` está conectado al receptor IR, siendo responsable de leer las señales del control remoto. Una vez capturada una señal, esta `se traduce a un caracter`, que es enviado a través del puerto serial al Arduino `receptor`. Este último, al recibir el caracter correspondiente, ejecuta la acción asociada, como por ejemplo desbloquear el sistema.
 
 >[!IMPORTANT]
 > Se considera que el mando IR únicamente lo tiene el dueño o alguien de confianza del dueño, en caso de pérdida o de que caiga en manos equivocadas, no nos hacemos responsables ya que cae de la responsabilidad del dueño quién tiene acceso a dicho control remoto.
 
 >[!IMPORTANT]
 > Hay funcionalidades del IR que su uso es únicamente para la presentación del proyecto, por cuestiones de agilizar la presentación. Es decir, dichas funcionalidades no estarán disponibles para el usuario final del sistema.
+
+>[!WARNING]
+> Debido al uso del módulo I2C para establecer la comunicación entre los dos Arduinos, es posible que en ocasiones usted note como la pantalla LCD pierda luminocidad o presente ligeros fallos. Esto se debe a las posibles interrupciones que se están produciendo, haciendo que la pantalla sufra estas consecuencias. Cabe aclarar que esto no signifca que el sistema deje de funcionar, simplemente la pantalla puede tener un comportamiento inesperado.
 
 A continuación, se presenta una tabla mostrando de una forma mñás visual lo mencionado previamente:
 <table>
@@ -84,21 +88,28 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
     <tr>
       <td>0</td>
       <td>22</td>
-      <td>'R'</td>
+      <td>'F'</td>
       <td>Resetea el sistema, volviendo al estado inicial.</td>
       <td>NO</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>TBD</td>
-      <td>TBD</td>
-      <td>Omite la autenticación</td>
+      <td>12</td>
+      <td>"C"</td>
+      <td>Cierra el pestillo de la caja fuerte, que es controlado por el Servo Motor.</td>
+      <td>SI</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>24</td>
+      <td>"S"</td>
+      <td>Omite la autenticación del usuario</td>
       <td>SI</td>
     </tr>
     <tr>
       <td>+</td>
-      <td>TBD</td>
-      <td>TBD</td>
+      <td>21</td>
+      <td>NA</td>
       <td>Encender Ventilador</td>
       <td>SI</td>
     </tr>
