@@ -47,6 +47,7 @@ Para el desarrollo de este proyecto, se hicieron uso de algunas librerías exter
 - DHT.h
 - Adafruit_Fingerprint.h
 - Servo.h
+- Wire.h
 
 ## 🚀 Introducción
 **BREVE INTRODUCCIÓN DEL PROYECTO**
