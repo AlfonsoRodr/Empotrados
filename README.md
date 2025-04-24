@@ -69,6 +69,9 @@ Como se explicó previamente, una vez que se agotan todos los intentos disponibl
 
 Cabe destacar que la comunicación entre los componentes encargados de este proceso se realiza mediante el `protocolo I2C` entre dos microcontroladores Arduino. Este esquema de comunicación sigue el esquema de `maestro - esclavo`, siendo el maestro el Arduino emisor, y el esclavo el Arduino receptor. El `maestro` es el que recibe las señales IR provenientes del control remoto, y asocia cada señal a un caracter en concreto que enviará al `esclavo` haciendo uso de la librería `Wire.h`. Por otra parte, el `esclavo` espera a recibir alguno de esos caracteres enviados, y en función del caracter recibido, realizará una acción concreta como puede ser, desbloquear el sistema.
 
+> [!NOTE]
+> La explicación sobre la forma en la que se establecieron las conexiones a nivel de hardware para poder conseguir esta comunicación, se realizará en la sección de [Diseño](#-diseño)
+
 >[!IMPORTANT]
 > Se considera que el mando IR únicamente lo tiene el dueño o alguien de confianza del dueño, en caso de pérdida o de que caiga en manos equivocadas, no nos hacemos responsables ya que cae de la responsabilidad del dueño quién tiene acceso a dicho control remoto.
 
@@ -285,6 +288,9 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
 
 ### Módulo ESP32-CAM
 Este módulo simplemente va conectado vía USB a la computadora.
+
+### Protocolo I2C
+Para poder conseguir establecer esta comunicación a nivel de hardware, se utilizaron los pines `SDA` y `SCL` que tiene el módulo I2C. **TERMINAR**
 
 Finalmente, las conexiones del sistema en su totalidad tiene el siguiente aspecto:
 ![Conexiones Sistema Entero](Proyecto/Diagramas/Connections/Sistema.png)
