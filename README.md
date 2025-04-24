@@ -293,7 +293,7 @@ Este módulo simplemente va conectado vía USB a la computadora.
 Para poder conseguir establecer esta comunicación a nivel de hardware, se utilizaron los pines `SDA` y `SCL` que tiene el módulo I2C. **TERMINAR**
 
 Finalmente, las conexiones del sistema en su totalidad tiene el siguiente aspecto:
-![Conexiones Sistema Entero](Proyecto/Diagramas/Connections/Sistema.png)
+![Conexiones Sistema Entero](Proyecto/Diagrams/Connections/Sistema.png)
 
 >[!NOTE]
 > También se proporciona el diagrama eléctrico del sistema, si desea consultarlo, haga click en este [enlace](Proyecto/Diagrams/Electric/Sistema.pdf)
