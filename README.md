@@ -1,4 +1,4 @@
-# Grupo 16: TBD
+# Grupo 1: TBD
 
 ## Tabla de Contenidos
 - [Participantes](#-participantes)
@@ -61,20 +61,20 @@ Se dispone de una matriz de botones 4x4 en el que el usuario tendrá 3 intentos 
 ### 📷❄️ Bloque 2
 Para añadir una mejor seguridad y proporcionar mayor información sobre lo que está sucediendo cuando un usuaro intenta interacturar con el sistema, se utilizó una cámara de seguridad cuyo funcionamiento es indepediente del bloque anterior. Esta cámara transmitirá en vivo y en directo todo lo que suceda mientras un usuario se encuentre interactuando con el sistema. Sin embargo, esta cámara tiene un ligero defecto y es el aumento de temperatura que puede sufrir mientras esté operativa, es por ello, que se decidió controlar dicha temperatura haciendo uso de un sensor de temperatura, que, tras superar una temperatura umbral, activaría un ventilador para enfriar un poco dicha cámara.
 
-### 📡 Gestión de IR y Comunicaicón mediante I2C
+### 📡 Gestión de IR y Comunicaicón mediante Protocolo I2C
 Como se explicó previamente, una vez que se agotan todos los intentos disponibles (ya sea para ingresar la contraseña o verificar la huella dactilar), el sistema entra en un estado de bloqueo permanente. Sin embargo, existe un mecanismo especial para que el propietario pueda desbloquearlo: el uso de un control remoto infrarrojo (IR). Al presionar un botón específico en el control, se envía una señal que es captada por un receptor IR, lo cual permite al sistema salir del estado de bloqueo.
 
-**CAMBIAR ESTE PÁRRAFO**
-Cabe destacar que la comunicación entre los componentes encargados de este proceso se realiza mediante `I2C` entre dos microcontroladores Arduino. En este esquema, el Arduino `emisor` está conectado al receptor IR, siendo responsable de leer las señales del control remoto. Una vez capturada una señal, esta `se traduce a un caracter`, que es enviado a través del puerto serial al Arduino `receptor`. Este último, al recibir el caracter correspondiente, ejecuta la acción asociada, como por ejemplo desbloquear el sistema.
+>[!NOTE]
+> Pese a que la idea original fue enfocada para desbloquear el sistema, se añadieron funcionalidades adicionales que se explicarán a lo largo de esta sección.
+
+Cabe destacar que la comunicación entre los componentes encargados de este proceso se realiza mediante el `protocolo I2C` entre dos microcontroladores Arduino. Este esquema de comunicación sigue el esquema de `maestro - esclavo`, siendo el maestro el Arduino emisor, y el esclavo el Arduino receptor. El `maestro` es el que recibe las señales IR provenientes del control remoto, y asocia cada señal a un caracter en concreto que enviará al `esclavo` haciendo uso de la librería `Wire.h`. Por otra parte, el `esclavo` espera a recibir alguno de esos caracteres enviados, y en función del caracter recibido, realizará una acción concreta como puede ser, desbloquear el sistema.
 
 >[!IMPORTANT]
 > Se considera que el mando IR únicamente lo tiene el dueño o alguien de confianza del dueño, en caso de pérdida o de que caiga en manos equivocadas, no nos hacemos responsables ya que cae de la responsabilidad del dueño quién tiene acceso a dicho control remoto.
 
->[!IMPORTANT]
-> Hay funcionalidades del IR que su uso es únicamente para la presentación del proyecto, por cuestiones de agilizar la presentación. Es decir, dichas funcionalidades no estarán disponibles para el usuario final del sistema.
-
 >[!WARNING]
-> Debido al uso del módulo I2C para establecer la comunicación entre los dos Arduinos, es posible que en ocasiones usted note como la pantalla LCD pierda luminocidad o presente ligeros fallos. Esto se debe a las posibles interrupciones que se están produciendo, haciendo que la pantalla sufra estas consecuencias. Cabe aclarar que esto no signifca que el sistema deje de funcionar, simplemente la pantalla puede tener un comportamiento inesperado.
+> Dado que la comunicación entre los dos Arduinos se establece mediante el protocolo I2C, es posible que en ciertos momentos se observen variaciones en la luminosidad de la pantalla LCD o pequeños fallos en su funcionamiento. Esto puede deberse a interrupciones ocasionales en la comunicación, que afectan temporalmente al comportamiento de la pantalla.
+Es importante destacar que estos efectos `no implican un mal funcionamiento del sistema en general`; simplemente, la pantalla puede presentar un comportamiento inesperado sin que ello interfiera en el correcto desempeño del resto del sistema.
 
 A continuación, se presenta una tabla mostrando de una forma mñás visual lo mencionado previamente:
 <table>
@@ -83,7 +83,6 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
     <th>Señal Correspondiente (Dec)</th>
     <th>Caracter que se Envía</th>
     <th>Acción que realiza el Arduino Receptor</th>
-    <th>¿Uso único para la Presentación?</th>
   </thead>
   <tbody>
     <tr>
@@ -91,28 +90,24 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
       <td>22</td>
       <td>'F'</td>
       <td>Resetea el sistema, volviendo al estado inicial.</td>
-      <td>NO</td>
     </tr>
     <tr>
       <td>1</td>
       <td>12</td>
       <td>"C"</td>
       <td>Cierra el pestillo de la caja fuerte, que es controlado por el Servo Motor.</td>
-      <td>SI</td>
     </tr>
     <tr>
       <td>2</td>
       <td>24</td>
       <td>"S"</td>
       <td>Omite la autenticación del usuario</td>
-      <td>SI</td>
     </tr>
     <tr>
       <td>+</td>
       <td>21</td>
       <td>NA</td>
       <td>Encender Ventilador</td>
-      <td>SI</td>
     </tr>
   </tbody>
 </table>
@@ -170,18 +165,13 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
       <td>0</td>
     </tr>
     <tr>
-      <td>LEDs</td>
-      <td>2</td>
-      <td>0</td>
-    </tr>
-    <tr>
       <td>Matriz de botones 4x4</td>
       <td>1</td>
       <td>0</td>
     </tr>
     <tr>
       <td>Resistencias 1K</td>
-      <td>4</td>
+      <td>2</td>
       <td>0</td>
     </tr>
     <tr>
@@ -221,7 +211,7 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
     </tr>
       <tr>
       <td><strong>TOTAL</strong></td>
-      <td><strong>20</strong></td>
+      <td><strong>16</strong></td>
       <td><strong>59.82</strong></td>
     </tr>
   </tbody>
@@ -323,7 +313,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     <tr>
       <td>PasswordManager</td>
       <td>Gestiona la interacción con la matriz de botones, verificando si la contraseña introducida es correcta</td>
-      <td>NA</td>
+      <td>I2CSignalHandler</td>
     </tr>
     <tr>
       <td>Fingerprint</td>
@@ -333,7 +323,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     <tr>
       <td>MotorLock</td>
       <td>Se encarga de gestionar el motor que opera el pestillo de la caja fuerte</td>
-      <td>NA</td>
+      <td>I2CSignalHandler</td>
     </tr>
     <tr>
       <td>RemoteControl.ino</td>
@@ -346,8 +336,13 @@ A continuación, se describirá la estructura del proyecto, especificando la org
       <td>NA</td>
     </tr>
     <tr>
+      <td>I2CSignalHandler</td>
+      <td>Es el manejador de la comunicaicón mediante el módulo I2C</td>
+      <td>NA</td>
+    </tr>
+    <tr>
       <td>CameraWebServer</td>
-      <td>Sketch extraído de los ejemplos de Arduino, que se encarga de la operatibilidad de la cámara, mostrando la dirección IP accesible vía web donde se podrá ver la transmisión en vivo.</td>
+      <td>Sketch obtenido de los ejemplos de Arduino para el ESP32-CAM. Permite la transmisión en vivo via web a través de la IP devuelta por dicho módulo.</td>
       <td>NA</td>
     </tr>
   </tbody>
@@ -367,18 +362,708 @@ En esta sección se mostrará la implementación de cada uno de los archivos men
 
 ### PasswordManager
 ````cpp
+/**
+ * @file PasswordManager.cpp
+ * @brief Implementation of the password management system for Arduino using keypad input.
+ *
+ * This file implements the core logic of a password-based access control system,
+ * including keypad handling, password verification, visual and audio feedback, and
+ * a limit on incorrect attempts. It uses a 4x4 keypad, an LCD for user interaction,
+ * and both a buzzer and LED for signaling feedback.
+ * 
+ * @authors
+ * - Alfonso Rodríguez
+ * - Raúl Sánchez
+ * - Héctor González
+ * - Andrés Muñoz
+ * 
+ * @date 2025-04-03
+ */
+#include "PasswordManager.h"
+
+// --- Keypad Configuration ---
+const byte ROWS = 4;
+const byte COLS = 4;
+char keys[ROWS][COLS] = { 
+  {'H', 'O', 'L', 'A'},
+  {'1', '2', 'T', 'E'},
+  {'O', '1', '9', 'C'},
+  {'*', '0', 'D', 'S'}  // 'S' is used to submit the password and 'D' to delete a character
+};
+
+byte rowsPins[ROWS] = {11, 10, 9, 8};
+byte colsPins[COLS] = {7, 6, 5, 4};
+
+// --- Global Objects and Variables ---
+Keypad teclado = Keypad(makeKeymap(keys), rowsPins, colsPins, ROWS, COLS);
+LiquidCrystal_I2C lcd(0x3f, 16, 2);
+int triesLeft = 3;
+bool wrongIntroducedPsw = true;
+
+const char password[7] = "HOLA12";  ///< Predefined 6-character password
+int counter = 0;                   ///< Tracks number of typed characters
+char result[32];                   ///< Buffer to store entered password
+
+/**
+ * @brief Initializes the password system hardware and state.
+ *
+ * Sets up the LCD display, buzzer, LED, serial communication and the I2C Communication Handler.
+ * Also initializes the password buffer for user input.
+ *
+ * @see I2CCommunication module.
+ */
+void setupPasswordManager() {
+    Serial.begin(9600);
+    setupSignalHandler(); // Initialize the I2C Handler.
+    lcd.init();
+    lcd.backlight();
+    lcd.clear();
+    pinMode(BUZZER, OUTPUT);
+    Serial.println("Sistema de contraseña listo.");
+    memset(result, 0, sizeof(result));
+}
+
+/**
+ * @brief Resets the number of allowed password attempts.
+ *
+ * This function restores the `triesLeft` counter to its default value (3),
+ * allowing the user to retry password entry after a reset or success.
+ */
+void resetTries() {
+    triesLeft = 3;
+}
+
+/**
+ * @brief Clears the password input state.
+ *
+ * Resets the entered characters, clears the input buffer, and stops any buzzer tone.
+ */
+void resetPasswordState() {
+    memset(result, 0, sizeof(result));
+    counter = 0;
+    noTone(BUZZER);
+}
+
+/**
+ * @brief Clears and reinitializes the LCD display.
+ *
+ * Displays the default password input prompt on the first row of the LCD.
+ */
+void resetLCDScreen() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Password: ");
+}
+
+/**
+ * @brief Performs a complete reset of the password system.
+ *
+ * Resets attempt counter, password buffer, and LCD screen to their initial state.
+ */
+void resetSystem() {
+    resetTries();
+    resetPasswordState();
+    resetLCDScreen();
+    handlePasswordInput();
+}
+
+/**
+ * @author Alfonso Rodríguez.
+ * @brief Verifies if the entered password matches the stored one.
+ *
+ * Compares the user-provided password with the predefined value.
+ * Only passwords of exactly 6 characters are considered valid for comparison.
+ *
+ * @param result Character array containing the user input.
+ * @return `true` if the password is correct, `false` otherwise.
+ */
+bool verifyPassword(char result[32]) {
+    if (strlen(result) != 6) {
+        return false;
+    }
+    return strcmp(result, password) == 0;
+}
+
+/**
+ * @author Alfonso Rodríguez.
+ * @brief Displays a masked password (with asterisks) on the LCD.
+ *
+ * Each character typed by the user is represented by an asterisk (`*`)
+ * on the second line of the LCD screen to preserve confidentiality.
+ */
+void printPassword() {
+    lcd.setCursor(0, 1);
+    for (int i = 0; i <= counter; i++) {
+        lcd.print('*');
+    }
+}
+
+/**
+ * @author Alfonso Rodríguez.
+ * @brief Handles password submission and validation.
+ * 
+ * This function finalizes the input by null-terminating the password buffer,
+ * clears the LCD display, and prints the result to the serial monitor.
+ * It then verifies whether the input matches the predefined password.
+ * 
+ * On success, it resets the attempt counter and displays positive feedback.
+ * On failure, it calls the error handler and decrements the number of attempts.
+ * 
+ * @return `1` if the password is correct,
+ *         `0` if the password is incorrect.
+ */
+int submitPassword() {
+    result[counter] = '\0';
+    counter = 0;
+    Serial.println(result);
+    lcd.clear();
+    if (verifyPassword(result)) {
+        correctPassword();
+        triesLeft = 3;
+        return 1;
+    } 
+    else {
+        wrongPassword();
+        return 0;
+    }
+}
+
+/**
+ * @author Andrés Muñoz.
+ * @brief Deletes the last entered character from the password buffer.
+ * 
+ * This function removes the most recent character from the input buffer
+ * and updates the LCD display by erasing the corresponding asterisk (`*`)
+ * on the second row. It also repositions the cursor for consistent input feedback.
+ */
+void deleteChar() {
+    if (counter > 0) {
+        counter--;
+        result[counter] = '\0';
+        lcd.setCursor(counter, 1);
+        lcd.print(' ');
+        lcd.setCursor(counter, 1);
+    }
+}
+
+/**
+ * @author Alfonso Rodríguez.
+ * @brief Handles keypad input and password submission.
+ *
+ * This function captures user input from the keypad, updates the password buffer,
+ * and displays masked characters. Upon pressing the 'S' key, the entered password 
+ * is verified and appropriate actions are taken for success or failure.
+ *
+ * @return An integer indicating the result:
+ * - `1` → Correct password
+ * - `0` → Incorrect password
+ * - `-1` → No submission yet (still typing)
+ */
+int handlePasswordInput() {
+    char key = teclado.getKey();
+
+    if (((key != 'S') && (key != NO_KEY)) && (key != 'D')) {
+        if (counter < 31) {
+            printPassword();
+            Serial.print("Tecla presionada: ");
+            Serial.println(key);
+            result[counter] = key;
+            counter++;
+        } 
+        else {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Password too long");
+            delay(2000);
+            return 0;
+        }
+    } 
+    else if (key == 'S') {
+        return submitPassword();
+    }
+    else if (key == 'D') {
+        deleteChar();
+    }
+    return -1;
+}
+
+/**
+ * @author Raúl Sánchez.
+ * @brief Executes success feedback upon correct password entry.
+ *
+ * This function shows a confirmation message, lights up the LED, and
+ * emits a short buzzer tone to indicate success.
+ */
+void correctPassword() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Correct password!!");
+    tone(BUZZER, 100);
+    delay(300);
+    noTone(BUZZER);
+    delay(1000);
+    lcd.clear();
+}
+
+/**
+ * @author Héctor González.
+ * @brief Reduces the remaining attempts and provides feedback.
+ *
+ * Decreases triesLeft by one, displays an error message, and activates
+ * a buzzer tone to signal an incorrect password attempt.
+ */
+void substractTry() {
+    triesLeft--;
+    lcd.setCursor(0, 0);
+    lcd.print("Wrong password");
+    lcd.setCursor(0, 1);
+    lcd.print("Tries left: ");
+    lcd.print(triesLeft);
+    delay(1000);
+    tone(BUZZER, 500);
+    delay(500);
+    noTone(BUZZER);
+    lcd.clear();
+}
+
+/**
+ * @author Héctor González.
+ * @author Alfonso Rodríguez.
+ * @brief Executes error feedback upon incorrect password entry.
+ *
+ * Decrements the number of allowed attempts and provides feedback through
+ * the LCD and a buzzer tone. If no attempts remain, triggers a blocking alert loop.
+ *
+ * @note It will unlock the system manually if the correct IR signal is received.
+ */
+void wrongPassword() {
+    if (triesLeft > 0) {
+        substractTry();
+    }
+    if (triesLeft == 0) {
+        lcd.setCursor(0, 0);
+        lcd.print("No tries left");
+        unsigned long timeout = millis() + 10000; // The system is lock for 10 segs.
+        while (millis() < timeout) {
+            tone(BUZZER, 1000);
+            delay(300);
+            tone(BUZZER, 1500);
+            delay(300);
+            if (isPasswordResetRequested()) {
+                clearSignalFlag(); // Reset the Signal.
+                break;
+            }
+        }
+        resetSystem();
+    }
+}
 ````
 
 ### Fingerprint
 ````cpp
+/**
+ * @file FingerprintImpl.cpp
+ * @brief Implementation of fingerprint sensor operations using Adafruit Fingerprint library.
+ *
+ * This file contains the logic to initialize the fingerprint sensor, 
+ * read and verify fingerprints, and provide feedback to the user through 
+ * LEDs and an LCD display. It includes user interaction messages 
+ * for successful and failed authentication attempts.
+ * 
+ * It integrates with the `PasswordManager` module and uses hardware resources 
+ * such as LEDs and the LCD to display system status and authentication outcomes.
+ *
+ * @author Alfonso Rodríguez
+ * @date 2025-03-26
+ */
+
+#include "FingerprintEsp.h"
+#include "PasswordManager.h"
+
+#if (defined(__AVR__) || defined(ESP8266)) && !defined(__AVR_ATmega2560__)
+SoftwareSerial mySerial(2, 3);
+#endif
+
+Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
+int ledRojo = A0;
+int ledVerde = A1;
+
+int opportunities = 5;
+
+/**
+ * @brief Initializes the fingerprint sensor and configures necessary hardware.
+ *
+ * This function sets up serial communication, configures the output pins
+ * for the red and green LEDs, initializes the fingerprint sensor module and initialize the I2C communication handler.
+ * It verifies whether the sensor is properly connected and operational.
+ *
+ * @details
+ * - Begins serial communication at 9600 baud.
+ * - Initializes the fingerprint sensor at 57600 baud.
+ * - If the fingerprint sensor is detected and verified, it proceeds.
+ * - If not detected, it prints an error message and halts execution.
+ *
+ * @note This function blocks indefinitely if the fingerprint sensor is not found.
+ * @warning Ensure the fingerprint sensor is properly connected before powering the device.
+ *
+ * @see I2CCommunication Module.
+ */
+void setupFingerprint() {
+    Serial.begin(9600);
+    setupSignalHandler();
+    while (!Serial);  
+    delay(100);
+
+    pinMode(ledRojo, OUTPUT);
+    pinMode(ledVerde, OUTPUT);
+
+    Serial.println("Inicializando sensor de huellas...");
+
+    finger.begin(57600);
+    delay(5);
+    
+    if (finger.verifyPassword()) {
+        Serial.println("Fingerprint sensor online.");
+    } 
+    else {
+        Serial.println("Error: Fingerprint sensor offline");
+        while (1) { 
+            delay(1000); 
+        }
+    }
+}
+
+/**
+ * @brief Resets the number of remaining fingerprint attempts to the maximum allowed.
+ * 
+ * This function sets the internal `opportunities` counter back to 5,
+ * which is the maximum number of fingerprint verification attempts allowed.
+ * It is typically called after a successful authentication or when the system resets,
+ * ensuring the user starts fresh with a full set of tries.
+ */
+void resetFingerOpportunities() {
+    opportunities = 5;
+}
+
+/**
+ * @brief Displays a success message when a fingerprint is correctly recognized.
+ *
+ * This function clears the LCD and shows a message indicating that a fingerprint
+ * has been successfully detected. After a short delay, it welcomes the user
+ * and displays their fingerprint ID.
+ *
+ * @note Uses `finger.fingerID` to print the ID of the recognized user.
+ * @warning This function includes delays (`delay(2000)`), which may block execution for 2 seconds.
+ */
+void printCorrectMessage() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Fingerprint");
+    lcd.setCursor(0, 1);
+    lcd.print("Detected!!");
+    delay(2000);
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Welcome Back");
+    lcd.setCursor(0, 1);
+    lcd.print("User: ");
+    lcd.print(finger.fingerID);
+}
+
+/**
+ * @brief Reduces the remaining attempts and provides feedback.
+ *
+ * Decreases `opportunities` by one, displays an error message, and activates
+ * a buzzer tone to signal an incorrect fingerprint attempt.
+ */
+void substracFingerprintTry() {
+    opportunities--;
+    lcd.setCursor(0, 0);
+    lcd.print("Not Detected");
+    lcd.setCursor(0, 1);
+    lcd.print("Tries left: ");
+    lcd.print(opportunities);
+    delay(1000);
+    tone(BUZZER, 500);
+    delay(500);
+    noTone(BUZZER);
+    lcd.clear();
+}
+
+/**
+ * @brief Executes error feedback upon incorrect fingerprint reading.
+ *
+ * Decrements the number of allowed attempts and provides feedback through
+ * the LCD and a buzzer tone. If no attempts remain, triggers a blocking alert loop.
+ *
+ * @note It will unlock the system manually if the correct IR signal is received.
+ */
+void wrongFingerPrint() {
+    if (opportunities > 0) {
+        substracFingerprintTry();
+    }
+    if (opportunities == 0) {
+        lcd.setCursor(0, 0);
+        lcd.print("No tries left");
+        unsigned long timeout = millis() + 10000; // The system is lock for 10 segs (Can be changed)
+        while (millis() < timeout) {
+            tone(BUZZER, 1000);
+            delay(300);
+            tone(BUZZER, 1500);
+            delay(300);
+            if (isPasswordResetRequested()) {
+                clearSignalFlag();  // Reset the Signal.
+                break;
+            }
+        }
+        resetFingerOpportunities();
+        resetSystem();
+    }
+}
+
+/**
+ * @brief Handles fingerprint recognition using the fingerprint sensor module.
+ *
+ * This function reads and processes a fingerprint image, then searches for a match
+ * in the stored database. If a fingerprint is successfully recognized, it displays
+ * a welcome message on the LCD, turns on a green LED, and prints the user ID and
+ * confidence level to the serial monitor. If the fingerprint is not recognized,
+ * it shows an error message and turns on a red LED briefly.
+ *
+ * @details
+ * - If the image cannot be read or processed, an appropriate error message is printed.
+ * - If the fingerprint is matched, it calls printCorrectMessage().
+ * - If not matched, it calls printWrongMessage().
+ */
+int fingerprintSensor() {
+    uint8_t p = finger.getImage();
+    if (p != FINGERPRINT_OK) {
+        digitalWrite(ledRojo, LOW);
+        Serial.println("No se pudo leer la huella. Intenta de nuevo.");
+        return -1;
+    } 
+    else {
+        p = finger.image2Tz();
+        if (p != FINGERPRINT_OK) {
+            digitalWrite(ledRojo, LOW);
+            Serial.println("No se pudo procesar la huella.");
+            delay(1000);
+            return;
+        }
+
+        p = finger.fingerSearch();
+        if (p == FINGERPRINT_OK) {
+            resetFingerOpportunities();
+            digitalWrite(ledRojo, LOW);
+            printCorrectMessage();
+            Serial.print("Huella reconocida. ID: "); 
+            Serial.println(finger.fingerID);
+            Serial.print("Nivel de confianza: "); 
+            Serial.println(finger.confidence);
+            digitalWrite(ledVerde, HIGH);
+            delay(5000);
+            lcd.clear();
+            digitalWrite(ledVerde, LOW);
+            return 1;
+        } 
+        else {
+            Serial.println("Huella no reconocida.");
+            digitalWrite(ledRojo, HIGH);
+            delay(5000);
+            digitalWrite(ledRojo, LOW);
+            wrongFingerPrint();
+            return 0;
+        }
+    }
+    delay(1000);
+}
 ````
 
 ### MotorLock
 ````cpp
 ````
 
+### I2CSignalHandler
+````cpp
+/**
+ * @file I2CSignalHandler.cpp
+ * @brief Handles I2C communication signals and maps them to internal control flags.
+ *
+ * This module listens for specific I2C signals sent from a master device
+ * and sets flags based on the received command. These flags can then be
+ * queried from other parts of the program to perform corresponding actions.
+ *
+ * Signal Mapping:
+ * - 'F' : Unlocks the system.
+ * - 'C' : Lock the motor mechanism.
+ * - 'S' : Bypass the authentication process.
+ *
+ * @author Alfonso Rodríguez.
+ * @date 2025-04-23
+ */
+
+#include "I2CSignalHandler.h"
+
+volatile SignalType lastSignal = NONE; ///< Stores the last received signal
+
+/**
+ * @brief Callback function triggered when data is received over I2C.
+ *
+ * This function reads incoming characters from the I2C buffer and
+ * updates the internal signal flag accordingly.
+ */
+void receiveI2CSignal() {
+  while (Wire.available()) {
+    char receivedChar = Wire.read();
+    if (receivedChar == 'F') {
+      lastSignal = PASSWORD_RESET;
+    } 
+    else if (receivedChar == 'C') {
+      lastSignal = MOTOR_LOCK_CLOSE;
+    }
+    else if (receivedChar == 'S') {
+      lastSignal = SKIP;
+    }
+  }
+}
+
+/**
+ * @brief Initializes I2C as a slave and registers the receive callback.
+ */
+void setupSignalHandler() {
+  Wire.begin(8);  // Slave with direction 8.
+  Wire.onReceive(receiveI2CSignal);
+}
+
+/**
+ * @brief Checks if a password reset was requested via I2C.
+ * @return true if a password reset signal was received
+ */
+bool isPasswordResetRequested() {
+  return lastSignal == PASSWORD_RESET;
+}
+
+/**
+ * @brief Checks if the motor lock should be closed based on I2C signal.
+ * @return true if a motor lock close signal was received
+ */
+bool isMotorLockCloseRequested() {
+  return lastSignal == MOTOR_LOCK_CLOSE;
+}
+
+/**
+ * @brief Checks if authentication should be skipped.
+ * @return true if a skip authentication signal was received
+ */
+bool skipAuthentication() {
+  return lastSignal == SKIP;
+}
+
+/**
+ * @brief Clears the current signal flag (sets it to NONE).
+ */
+void clearSignalFlag() {
+  lastSignal = NONE;
+}
+````
+
 ### RemoteControl
 ````cpp
+/**
+ * @file RemoteControl.ino
+ * @brief Main controller for IR signal handling, temperature monitoring, and I2C communication.
+ *
+ * This sketch uses IR remote signals to control different functionalities,
+ * such as toggling a fan, unlocking a system via I2C, and bypassing authentication.
+ * It also periodically reads temperature values and controls a fan accordingly.
+ *
+ * @author 
+ * Alfonso Rodríguez.
+ * @date 2025-04-23
+ */
+
+#include <TaskScheduler.h>
+#include <IRremote.h>
+#include <Wire.h>
+#include "TemperatureFanController.h"
+
+// === IR setup ===
+const int RECEPTOR_IR_PIN = 2;
+IRrecv irrecv(RECEPTOR_IR_PIN); // IR receiver object instance.
+
+// === I2C setup ===
+const byte RECEPTOR_I2C_ADDRESS = 8; // Asegúrate que este es el mismo en el Arduino receptor.
+
+// === Scheduler & Tasks ===
+Scheduler runner;
+
+void checkIR();             // Forward declaration
+void readTempAndControl();  // Forward declaration
+
+Task taskIR(50, TASK_FOREVER, &checkIR);               // Check IR every 50ms
+Task taskTemp(2000, TASK_FOREVER, &readTempAndControl); // Every 2 sec
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();  // Initialize the I2C as a Master.
+  irrecv.enableIRIn();  // Initialize the IR receiver.
+  setupTemperatureFan(); // Initialize DHT and fan
+  runner.init(); // Initialize the tasker.
+  runner.addTask(taskIR); // Add the IR to the tasks queue.
+  runner.addTask(taskTemp); // Add the TemperatureFanController operations to the tasks queue.
+  taskIR.enable();
+  taskTemp.enable();
+}
+
+void loop() {
+  runner.execute();  // Run scheduled tasks.
+}
+
+/**
+ * @brief Checks for incoming IR signals and acts accordingly.
+ * 
+ * IR Remote Commands:
+ * - Command 22: Sends 'F' via I2C to unlock system.
+ * - Command 12: Sends 'C' via I2C to close motor lock.
+ * - Command 24: Sends 'S' via I2C to skip authentication.
+ * - Command 21: Turns the fan ON manually.
+ */
+void checkIR() {
+  turnOffFan(); // If the button is pressed, the fan will turn off.
+  if (irrecv.decode()) {
+    unsigned long value = irrecv.decodedIRData.command;
+    Serial.println(value);
+
+    if (value == 22) { // Button: '0'
+      Wire.beginTransmission(RECEPTOR_I2C_ADDRESS);
+      Wire.write('F');  // Unlock the system.
+      Wire.endTransmission();
+    }
+    else if (value == 12) { // Button: '1'
+      Wire.beginTransmission(RECEPTOR_I2C_ADDRESS);
+      Wire.write('C');  // Close the Motor.
+      Wire.endTransmission();
+    }
+    else if (value == 24) { // Button: '2'
+      Wire.beginTransmission(RECEPTOR_I2C_ADDRESS);
+      Wire.write('S');  // Skip Authentication.
+      Wire.endTransmission();
+    }
+    else if (value == 21) { // Button: '+'
+      turnOnFan();  // Fan ON manually
+    }
+    irrecv.resume();  // Resume listening for the next IR signal.
+  }
+}
+
+/**
+ * @brief Reads temperature and controls the fan based on thresholds.
+ * 
+ * @see TemperatureFanController module.
+ */
+void readTempAndControl() {
+  updateTemperatureFan();
+}
 ````
 
 ### TemperatureFanController
