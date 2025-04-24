@@ -1,4 +1,4 @@
-# Grupo 1: TBD
+# Grupo 1: Sistema de Seguridad con Transmisión en Vivo y Personalización mediante IR
 
 ## Tabla de Contenidos
 - [Participantes](#-participantes)
