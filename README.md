@@ -290,7 +290,10 @@ En esta sección, se mostrarán las conexiones realizadas para llevar a cabo est
 Este módulo simplemente va conectado vía USB a la computadora.
 
 ### Protocolo I2C
-Para poder conseguir establecer esta comunicación a nivel de hardware, se utilizaron los pines `SDA` y `SCL` que tiene el módulo I2C. Arduino UNO por defecto, tiene asignado dichos pines en los pines análogicos 4 y 5 respectivamente **CONTINUAR**
+Para establecer la comunicación a nivel de hardware mediante el protocolo I2C, se emplearon las líneas de datos serie (SDA) y de reloj (SCL). En el caso del Arduino UNO, estos pines están asignados por defecto a las entradas analógicas A4 (SDA) y A5 (SCL). Por lo tanto, para lograr establecer dicha comunicación, se conectaron los pines A4 y A5 de ambas placas entre sí.
+
+Dado que también es necesario establecer la conexión con el módulo I2C, se estableció un punto eléctrico común para las líneas SDA y SCL, desde el cual se realizaron bifurcaciones hacia el maestro, el esclavo y el módulo I2C.
+
 
 Finalmente, las conexiones del sistema en su totalidad tiene el siguiente aspecto:
 ![Conexiones Sistema Entero](Proyecto/Diagrams/Connections/Sistema.png)
