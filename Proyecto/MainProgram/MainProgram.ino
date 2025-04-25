@@ -2,6 +2,7 @@
 #include "FingerprintEsp.h"
 #include <LiquidCrystal_I2C.h>
 #include "MotorLock.h"
+#include "MotorArm.h"
 
 bool correctFinger = false;
 
@@ -9,13 +10,14 @@ void setup() {
   setupPasswordManager();
   setupFingerprint();
   setupServo();
+  setupArm();
 }
 
 void loop() {
   lcd.setCursor(0, 0);
   lcd.print("Password:");
   if (handlePasswordInput() == 1) {
-    if (skipAuthentication()) {
+    if (skipAuthentication()) { // If the correct IR signal is received, the authentiation process is skipped.
       lcd.setCursor(0,0);
       lcd.print("Authentication");
       lcd.setCursor(0, 1);
@@ -45,10 +47,14 @@ void loop() {
     lcd.clear();
     if (correctFinger) {
       openServo();
+      delay(5000);
+      armUp();
+
     }
   }
-  if (isMotorLockCloseRequested()) {
+  if (isMotorLockCloseRequested()) { // If the correct IR signal is received, the motor lock and motor arm return to the original state.
     clearSignalFlag();
     closeServo();
+    armDown();
   }
 }

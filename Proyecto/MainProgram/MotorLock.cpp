@@ -32,13 +32,7 @@ void closeServo(){
 
 /**
  * @brief Unlocks the mechanism by moving the servo to the open position.
- * 
- * @note It will lock again the mechanism if the correct IR signal is received.
  */
 void openServo(){
   servo.write(SERVO_OPEN);
-  if (isMotorLockCloseRequested()) {
-    clearSignalFlag();  // Reset the signal.
-    closeServo();
-  }
 }

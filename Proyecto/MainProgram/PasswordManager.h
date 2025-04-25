@@ -151,7 +151,7 @@ void correctPassword();
  *
  * Updates the LCD to reflect a failed attempt and plays an alert tone.
  */
-void substractTry();
+void substractTry();    
 
 /**
  * @brief Executes feedback for incorrect password entry.

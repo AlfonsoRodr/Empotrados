@@ -121,7 +121,6 @@ void printData(float temperature, float humidity) {
  * If the sensor fails to provide valid readings, an error message is shown instead.
  */
 void updateTemperatureFan() {
-  //delay(2000);  // DHT11 requires delay between reads
  
   float humidity = dht.readHumidity();
   float temperature = dht.readTemperature();
