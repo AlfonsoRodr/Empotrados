@@ -951,11 +951,8 @@ Servo servo;
  * @brief Initializes the servo motor.
  *
  * Attaches the servo to the specified pin and sets it to the locked position and initialize the I2C communication handler.
- *
- * @see I2CCommunication module.
  */
 void setupServo(){
-  setupSignalHandler();
   servo.attach(14);
   servo.write(SERVO_CLOSE);
 }
@@ -996,7 +993,6 @@ Servo arm;
  * Attaches the servo to the specified pin and sets it to the down position and initialize the I2C communication handler.
  */
 void setupArm(){
-  setupSignalHandler();
   arm.attach(15);
   arm.write(ARM_DOWN);
 }
