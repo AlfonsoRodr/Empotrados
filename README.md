@@ -437,8 +437,7 @@ void loop() {
  *
  * This file implements the core logic of a password-based access control system,
  * including keypad handling, password verification, visual and audio feedback, and
- * a limit on incorrect attempts. It uses a 4x4 keypad, an LCD for user interaction,
- * and both a buzzer and LED for signaling feedback.
+ * a limit on incorrect attempts. It uses a 4x4 keypad, an LCD for user interaction, and both a buzzer for signaling feedback.
  * 
  * @authors
  * - Alfonso Rodríguez
@@ -476,7 +475,7 @@ char result[32];                   ///< Buffer to store entered password
 /**
  * @brief Initializes the password system hardware and state.
  *
- * Sets up the LCD display, buzzer, LED, serial communication and the I2C Communication Handler.
+ * Sets up the LCD display, buzzer, serial communication and the I2C Communication Handler.
  * Also initializes the password buffer for user input.
  *
  * @see I2CCommunication module.
@@ -495,7 +494,7 @@ void setupPasswordManager() {
 /**
  * @brief Resets the number of allowed password attempts.
  *
- * This function restores the `triesLeft` counter to its default value (3),
+ * This function restores the triesLeft counter to its default value (3),
  * allowing the user to retry password entry after a reset or success.
  */
 void resetTries() {
@@ -544,7 +543,7 @@ void resetSystem() {
  * Only passwords of exactly 6 characters are considered valid for comparison.
  *
  * @param result Character array containing the user input.
- * @return `true` if the password is correct, `false` otherwise.
+ * @return true if the password is correct, false otherwise.
  */
 bool verifyPassword(char result[32]) {
     if (strlen(result) != 6) {
@@ -660,8 +659,7 @@ int handlePasswordInput() {
  * @author Raúl Sánchez.
  * @brief Executes success feedback upon correct password entry.
  *
- * This function shows a confirmation message, lights up the LED, and
- * emits a short buzzer tone to indicate success.
+ * This function shows a confirmation message, and emits a short buzzer tone to indicate success.
  */
 void correctPassword() {
     lcd.clear();
