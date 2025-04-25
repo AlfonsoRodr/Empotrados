@@ -21,7 +21,7 @@ const int RECEPTOR_IR_PIN = 2;
 IRrecv irrecv(RECEPTOR_IR_PIN); // IR receiver object instance.
 
 // === I2C setup ===
-const byte RECEPTOR_I2C_ADDRESS = 8; // Asegúrate que este es el mismo en el Arduino receptor.
+const byte RECEPTOR_I2C_ADDRESS = 8;
 
 // === Scheduler & Tasks ===
 Scheduler runner;

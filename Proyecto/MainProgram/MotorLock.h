@@ -9,7 +9,6 @@
 #ifndef MOTOR_LOCK_H
 #define MOTOR_LOCK_H
 
-#include "I2CSignalHandler.h"
 #include <Servo.h>
 
 #define SERVO_OPEN -90
