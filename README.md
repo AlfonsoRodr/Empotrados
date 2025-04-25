@@ -317,7 +317,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     <tr>
       <td>MainProgram.ino</td>
       <td>Es el archivo principal del proyecto. Es donde se realiza la ejecución del software</td>
-      <td>PasswordManager, Fingerprint, MotorLock</td>
+      <td>PasswordManager, Fingerprint, MotorLock, MotorArm</td>
     </tr>
     <tr>
       <td>PasswordManager</td>
