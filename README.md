@@ -367,6 +367,66 @@ En esta sección se mostrará la implementación de cada uno de los archivos men
 
 ### MainProgram
 ````cpp
+#include "PasswordManager.h"
+#include "FingerprintEsp.h"
+#include <LiquidCrystal_I2C.h>
+#include "MotorLock.h"
+#include "MotorArm.h"
+
+bool correctFinger = false;
+
+void setup() {
+  setupPasswordManager();
+  setupFingerprint();
+  setupServo();
+  setupArm();
+}
+
+void loop() {
+  lcd.setCursor(0, 0);
+  lcd.print("Password:");
+  if (handlePasswordInput() == 1) {
+    if (skipAuthentication()) { // If the correct IR signal is received, the authentiation process is skipped.
+      lcd.setCursor(0,0);
+      lcd.print("Authentication");
+      lcd.setCursor(0, 1);
+      lcd.print("Skipped");
+      delay(2000);
+      clearSignalFlag();
+      correctFinger = true;
+    }
+    else {
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Put your Finger");
+      delay(2000);
+      lcd.clear();
+      for (int i = 0; i < 5; i++) {
+        if (fingerprintSensor() == 1) {
+          correctFinger = true;
+          break;
+        }
+        else {
+          lcd.clear();
+          lcd.setCursor(0,0);
+          lcd.print("Put your Finger");
+        }
+      }
+    }
+    lcd.clear();
+    if (correctFinger) {
+      openServo();
+      delay(5000);
+      armUp();
+
+    }
+  }
+  if (isMotorLockCloseRequested()) { // If the correct IR signal is received, the motor lock and motor arm return to the original state.
+    clearSignalFlag();
+    closeServo();
+    armDown();
+  }
+}
 ````
 
 ### PasswordManager
@@ -675,12 +735,10 @@ void wrongPassword() {
  * @brief Implementation of fingerprint sensor operations using Adafruit Fingerprint library.
  *
  * This file contains the logic to initialize the fingerprint sensor, 
- * read and verify fingerprints, and provide feedback to the user through 
- * LEDs and an LCD display. It includes user interaction messages 
- * for successful and failed authentication attempts.
+ * read and verify fingerprints, and provide feedback to the user through LCD display. 
+ * It includes user interaction messages for successful and failed authentication attempts.
  * 
- * It integrates with the `PasswordManager` module and uses hardware resources 
- * such as LEDs and the LCD to display system status and authentication outcomes.
+ * @see PasswordManager
  *
  * @author Alfonso Rodríguez
  * @date 2025-03-26
@@ -688,14 +746,13 @@ void wrongPassword() {
 
 #include "FingerprintEsp.h"
 #include "PasswordManager.h"
+#include <Arduino.h>
 
 #if (defined(__AVR__) || defined(ESP8266)) && !defined(__AVR_ATmega2560__)
 SoftwareSerial mySerial(2, 3);
 #endif
 
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
-int ledRojo = A0;
-int ledVerde = A1;
 
 int opportunities = 5;
 
@@ -722,9 +779,6 @@ void setupFingerprint() {
     setupSignalHandler();
     while (!Serial);  
     delay(100);
-
-    pinMode(ledRojo, OUTPUT);
-    pinMode(ledVerde, OUTPUT);
 
     Serial.println("Inicializando sensor de huellas...");
 
@@ -814,7 +868,7 @@ void wrongFingerPrint() {
     if (opportunities == 0) {
         lcd.setCursor(0, 0);
         lcd.print("No tries left");
-        unsigned long timeout = millis() + 10000; // The system is lock for 10 segs (Can be changed)
+        unsigned long timeout = millis() + 10000; // The system is lock for 10 segs.
         while (millis() < timeout) {
             tone(BUZZER, 1000);
             delay(300);
@@ -847,14 +901,12 @@ void wrongFingerPrint() {
 int fingerprintSensor() {
     uint8_t p = finger.getImage();
     if (p != FINGERPRINT_OK) {
-        digitalWrite(ledRojo, LOW);
         Serial.println("No se pudo leer la huella. Intenta de nuevo.");
         return -1;
     } 
     else {
         p = finger.image2Tz();
         if (p != FINGERPRINT_OK) {
-            digitalWrite(ledRojo, LOW);
             Serial.println("No se pudo procesar la huella.");
             delay(1000);
             return;
@@ -863,23 +915,18 @@ int fingerprintSensor() {
         p = finger.fingerSearch();
         if (p == FINGERPRINT_OK) {
             resetFingerOpportunities();
-            digitalWrite(ledRojo, LOW);
             printCorrectMessage();
             Serial.print("Huella reconocida. ID: "); 
             Serial.println(finger.fingerID);
             Serial.print("Nivel de confianza: "); 
             Serial.println(finger.confidence);
-            digitalWrite(ledVerde, HIGH);
             delay(5000);
             lcd.clear();
-            digitalWrite(ledVerde, LOW);
             return 1;
         } 
         else {
             Serial.println("Huella no reconocida.");
-            digitalWrite(ledRojo, HIGH);
             delay(5000);
-            digitalWrite(ledRojo, LOW);
             wrongFingerPrint();
             return 0;
         }
@@ -927,6 +974,53 @@ void closeServo(){
  */
 void openServo(){
   servo.write(SERVO_OPEN);
+}
+````
+
+### MotorArm
+````cpp
+/**
+ * @file MotorArm.cpp
+ * @author Raúl Sánchez.
+ * @brief Implementation file for servo motor arm control functions.
+ *
+ * This file provides the implementation of functions declared in MotorArm.h,
+ * allowing control of a servo motor that operates as a mechanic arm.
+ */
+#include "MotorArm.h"
+#include <Arduino.h>
+
+Servo arm;
+
+/**
+ * @brief Initializes the servo motor.
+ *
+ * Attaches the servo to the specified pin and sets it to the down position and initialize the I2C communication handler.
+ */
+void setupArm(){
+  setupSignalHandler();
+  arm.attach(15);
+  arm.write(ARM_DOWN);
+}
+
+/**
+ * @brief Moves the servo mechanism to the down position.
+ */
+void armDown(){
+    for (int pos = ARM_UP; pos <= ARM_DOWN; pos++) {
+        arm.write(pos);
+        delay(10);
+    }
+}
+
+/**
+ * @brief Moves the servo mechanism to the up position.
+ */
+void armUp(){
+    for (int pos = ARM_DOWN; pos >= ARM_UP; pos--) {
+        arm.write(pos);
+        delay(10);
+    }
 }
 ````
 
@@ -1039,7 +1133,7 @@ const int RECEPTOR_IR_PIN = 2;
 IRrecv irrecv(RECEPTOR_IR_PIN); // IR receiver object instance.
 
 // === I2C setup ===
-const byte RECEPTOR_I2C_ADDRESS = 8; // Asegúrate que este es el mismo en el Arduino receptor.
+const byte RECEPTOR_I2C_ADDRESS = 8;
 
 // === Scheduler & Tasks ===
 Scheduler runner;
