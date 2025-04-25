@@ -223,6 +223,9 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
   </tbody>
 </table>
 
+>[!IMPORTANT]
+> El sensor de movimiento PIR no se utilizó en el desarrollo del proyecto, debido a la mala calibración que este tenía. Se intentó calibrar correctamente pero no se logró obtener el resultado esperado, por lo que se optó por descartarlo del proyecto.
+
 ## 🧩 Diseño
 En esta sección, se mostrarán las conexiones realizadas para llevar a cabo este proyecto.
 
