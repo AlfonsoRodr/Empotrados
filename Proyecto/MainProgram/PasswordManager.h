@@ -4,7 +4,7 @@
  *
  * This header file declares the core components of a password access control system
  * for Arduino. The system uses a keypad for password entry, an LCD screen for visual
- * feedback, and a buzzer and LED for status signaling. It provides user feedback for 
+ * feedback, and a buzzer for status signaling. It provides user feedback for 
  * both correct and incorrect entries and enforces a limit on failed attempts.
  *
  * Intended to be used in conjunction with `PasswordManager.cpp`, this module is also 
@@ -38,8 +38,8 @@ extern bool wrongIntroducedPsw;    ///< Flag indicating whether a wrong password
 /**
  * @brief Initializes the password system and associated hardware.
  *
- * Sets up the LCD screen, keypad input, I/O pins (buzzer and LED), and serial communication.
- * This function should be called in the `setup()` function of the main sketch.
+ * Sets up the LCD screen, keypad input, I/O pins (buzzer), and serial communication.
+ * This function should be called in the setup() function of the main sketch.
  *
  * @note This function assumes that the LCD and keypad hardware are connected and initialized properly.
  */
@@ -91,7 +91,7 @@ bool verifyPassword(char result[32]);
  * corresponding to the number of characters typed by the user so far, preserving
  * confidentiality during input.
  *
- * @note Typically called from within `handlePasswordInput()` whenever a key is pressed.
+ * @note Typically called from within handlePasswordInput() whenever a key is pressed.
  */
 void printPassword();
 
@@ -101,8 +101,8 @@ void printPassword();
  * Terminates the input string, sends it to the serial monitor, and clears the LCD.
  * It then checks whether the input matches the predefined password.
  * 
- * - On success: calls `correctPassword()` and resets the attempt counter.
- * - On failure: calls `wrongPassword()` and decreases the remaining attempts.
+ * - On success: calls correctPassword() and resets the attempt counter.
+ * - On failure: calls wrongPassword() and decreases the remaining attempts.
  * 
  * @return `1` if the password is correct,
  *         `0` if the password is incorrect.
@@ -142,7 +142,7 @@ int handlePasswordInput();
  * Displays a success message on the LCD, activates the LED, and plays a tone
  * on the buzzer to confirm successful access.
  *
- * @note Typically called by `handlePasswordInput()` or similar password verification logic.
+ * @note Typically called by handlePasswordInput() or similar password verification logic.
  */
 void correctPassword();
 
