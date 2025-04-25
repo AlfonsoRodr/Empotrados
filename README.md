@@ -308,7 +308,7 @@ Finalmente, las conexiones del sistema en su totalidad tiene el siguiente aspect
 A continuación, se describirá la estructura del proyecto, especificando la organización modular del código, la responsabilidad funcional de cada archivo fuente y la forma en que los distintos componentes interactúan entre sí dentro del sistema.
 
 >[!NOTE]
-> Tenga en cuenta que a pesar de que solo se haga mención al nombre del archivo como tal, cada uno de los archivos tiene su correspondiete interfaz (.h) y su implementación (.cpp)
+> Tenga en cuenta que a pesar de que solo se haga mención al nombre del archivo como tal, cada uno de los archivos tiene su correspondiente interfaz (.h) y su implementación (.cpp)
 
 <table>
   <thead>
