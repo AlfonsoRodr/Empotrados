@@ -85,7 +85,7 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
     <th>Botón Pulsado</th>
     <th>Señal Correspondiente (Dec)</th>
     <th>Caracter que se Envía</th>
-    <th>Acción que realiza el Arduino Receptor</th>
+    <th>Acción que realiza el Arduino Esclavo</th>
   </thead>
   <tbody>
     <tr>
@@ -372,7 +372,7 @@ A continuación, se muestra un `diagrama de clases` para reflejar de una forma m
 ## 🧑‍💻 Implementación
 En esta sección se mostrará la implementación de cada uno de los archivos mencionados en la sección anterior.
 
-### MainProgram
+### MainProgram (.ino del Arduino Esclavo)
 ````cpp
 #include "PasswordManager.h"
 #include "FingerprintEsp.h"
@@ -1109,7 +1109,7 @@ void clearSignalFlag() {
 }
 ````
 
-### RemoteControl
+### RemoteControl (.ino del Arduino Maestro)
 ````cpp
 /**
  * @file RemoteControl.ino
