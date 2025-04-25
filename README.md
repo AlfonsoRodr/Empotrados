@@ -120,7 +120,7 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
 
 A continuación, se muestra un diagrama de actividad que refleja el funcionamiento del sistema de una forma más visual, para así complementar con lo dicho previamente.
 
-![Diagrama de Actividad Bloque 1](Proyecto/Diagrams/Others/DiagramaActividad1.jpg)
+![Diagrama de Actividad Bloque 1](Proyecto/Diagrams/Others/DigActividad.jpg)
 
 >[!NOTE]
 > La transmisión en vivo ofrecida por la cámara, se puede ver introduciendo en cualquier navegador web, la IP que dicha cámara devuelve una vez esté correctamente operativa.
