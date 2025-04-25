@@ -332,7 +332,12 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     <tr>
       <td>MotorLock</td>
       <td>Se encarga de gestionar el motor que opera el pestillo de la caja fuerte</td>
-      <td>I2CSignalHandler</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>MotorArm</td>
+      <td>Se encarga de gestionar el motor que opera el brazo que se encuentra dentro de la caja fuerte</td>
+      <td>NA</td>
     </tr>
     <tr>
       <td>RemoteControl.ino</td>
@@ -346,7 +351,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     </tr>
     <tr>
       <td>I2CSignalHandler</td>
-      <td>Es el manejador de la comunicaicón mediante el módulo I2C</td>
+      <td>Es el manejador de la comunicación mediante el protocolo I2C siguiendo el esquema maestro-esclavo</td>
       <td>NA</td>
     </tr>
     <tr>
@@ -361,9 +366,11 @@ A continuación, se muestra un `diagrama de clases` para reflejar de una forma m
 
 ![Diagrama de Clases](Proyecto/Diagrams/Others/DigClases.jpg)
 
+>[!NOTE]
+> En el diagrama de clases mostrado anteriormente no se refleja el módulo de la cámara, esto se debe a que es un ejemplo que viene por defecto en el propio IDE de Arduino, que contiene sus propias librerías y archivos.
+
 ## 🧑‍💻 Implementación
 En esta sección se mostrará la implementación de cada uno de los archivos mencionados en la sección anterior.
-**IN PROGRESS**
 
 ### MainProgram
 ````cpp
