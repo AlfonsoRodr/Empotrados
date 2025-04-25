@@ -9,7 +9,6 @@
 #ifndef MOTOR_ARM_H
 #define MOTOR_ARM_H
 
-#include "I2CSignalHandler.h"
 #include <Servo.h>
 
 #define ARM_UP 45

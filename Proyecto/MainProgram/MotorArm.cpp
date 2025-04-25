@@ -17,7 +17,6 @@ Servo arm;
  * Attaches the servo to the specified pin and sets it to the down position and initialize the I2C communication handler.
  */
 void setupArm(){
-  setupSignalHandler();
   arm.attach(15);
   arm.write(ARM_DOWN);
 }
