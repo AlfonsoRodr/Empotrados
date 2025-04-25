@@ -369,12 +369,6 @@ A continuación, se muestra un `diagrama de clases` para reflejar de una forma m
 
 ![Diagrama de Clases](Proyecto/Diagrams/Others/DigClases.jpg)
 
-Para complementar, se muestra el `diagrama de la estructura del proyecta`.
-![Diagrama Estructura](Proyecto/Diagrams/Others/StructureDiagram.png)
-
->[!NOTE]
-> En caso de que desee ver el diagrama de mejor forma e interactuar con el, lo puede hacer a través del siguiente [enlace](https://gitdiagram.com/AlfonsoRodr/Empotrados)
-
 >[!NOTE]
 > En el diagrama de clases mostrado anteriormente no se refleja el módulo de la cámara, esto se debe a que es un ejemplo que viene por defecto en el propio IDE de Arduino, que contiene sus propias librerías y archivos.
 
