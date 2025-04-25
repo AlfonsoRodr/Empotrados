@@ -1,5 +1,8 @@
 # Grupo 1: Sistema de Seguridad con Transmisión en Vivo y Personalización mediante IR
 
+>[!NOTE]
+> En caso de no tener ningún editor de texto que reconozca el formato `markdown (.md)` le recomendamos que acceda al [repositorio de github](https://github.com/AlfonsoRodr/Empotrados), en donde podrá visualizarlo sin ningún tipo de problemas, además de poder ver el proyecto al completo.
+
 ## Tabla de Contenidos
 - [Participantes](#-participantes)
 - [Librerías Necesarias](#-librerías-necesarias)
@@ -365,6 +368,12 @@ A continuación, se describirá la estructura del proyecto, especificando la org
 A continuación, se muestra un `diagrama de clases` para reflejar de una forma más visual lo mencionado con anterioridad.
 
 ![Diagrama de Clases](Proyecto/Diagrams/Others/DigClases.jpg)
+
+Para complementar, se muestra el `diagrama de la estructura del proyecta`.
+![Diagrama Estructura](Proyecto/Diagrams/Others/StructureDiagram.png)
+
+>[!NOTE]
+> En caso de que desee ver el diagrama de mejor forma e interactuar con el, lo puede hacer a través del siguiente [enlace](https://gitdiagram.com/AlfonsoRodr/Empotrados)
 
 >[!NOTE]
 > En el diagrama de clases mostrado anteriormente no se refleja el módulo de la cámara, esto se debe a que es un ejemplo que viene por defecto en el propio IDE de Arduino, que contiene sus propias librerías y archivos.
