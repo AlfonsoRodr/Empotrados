@@ -3,12 +3,10 @@
  * @brief Implementation of fingerprint sensor operations using Adafruit Fingerprint library.
  *
  * This file contains the logic to initialize the fingerprint sensor, 
- * read and verify fingerprints, and provide feedback to the user through 
- * LEDs and an LCD display. It includes user interaction messages 
- * for successful and failed authentication attempts.
+ * read and verify fingerprints, and provide feedback to the user through LCD display. 
+ * It includes user interaction messages for successful and failed authentication attempts.
  * 
- * It integrates with the `PasswordManager` module and uses hardware resources 
- * such as LEDs and the LCD to display system status and authentication outcomes.
+ * @see PasswordManager
  *
  * @author Alfonso Rodríguez
  * @date 2025-03-26

@@ -1,5 +1,5 @@
 /**
- * @file MotorLock.cpp
+ * @file MotorArm.cpp
  * @author Raúl Sánchez.
  * @brief Implementation file for servo motor arm control functions.
  *
@@ -15,8 +15,6 @@ Servo arm;
  * @brief Initializes the servo motor.
  *
  * Attaches the servo to the specified pin and sets it to the down position and initialize the I2C communication handler.
- *
- * @see I2CCommunication module.
  */
 void setupArm(){
   setupSignalHandler();

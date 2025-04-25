@@ -4,8 +4,7 @@
  *
  * This header file declares the functions and variables necessary to interface
  * with a fingerprint sensor using the Adafruit Fingerprint library.
- * It supports both SoftwareSerial (for AVR/ESP8266 boards) and hardware serial
- * for other boards like the ATmega2560.
+ * It supports both SoftwareSerial and hardware serial.
  * 
  * @author Alfonso Rodríguez
  * @date 2025-03-26
@@ -37,16 +36,6 @@ extern SoftwareSerial mySerial;
  * @brief Instance of the Adafruit_Fingerprint class used to control the sensor.
  */
 extern Adafruit_Fingerprint finger;
-
-/**
- * @brief Pin number for the red LED used to indicate failure or error.
- */
-extern int ledRojo;
-
-/**
- * @brief Pin number for the green LED used to indicate success.
- */
-extern int ledVerde;
 
 /**
  * @brief Initializes the fingerprint sensor and verifies connectivity.
