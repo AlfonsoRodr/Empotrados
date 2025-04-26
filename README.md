@@ -53,7 +53,19 @@ Para el desarrollo de este proyecto, se hicieron uso de algunas librerías exter
 - Wire.h
 
 ## 🚀 Introducción
-**BREVE INTRODUCCIÓN DEL PROYECTO**
+Las cajas fuertes son una de las herramientas de seguridad más populares actualmente, siendo tal impacto que las podemos encontrar en el día a día, como pueden ser en bancos, en habitaciones de hoteles, etc. En el ámbito doméstico, la mayoría de las cajas fuertes utilizan un único método de verificación, basado en una contraseña o un patrón. Por otro lado, aquellas cajas fuertes que ofrecen múltiples métodos de autenticación suelen estar destinadas a usos más avanzados, como en bancos u organizaciones.
+
+El objetivo de este proyecto es diseñar un sistema de seguridad que ofrezca un mecanismo de autenticación más robusta antes de poder acceder a la caja fuerte, enfocado para todo tipo de públicos (domésticos u organizacionales). Para ello, se añadió un método de autenticación basado en `datos biométricos`, utilizando en concreto la `huella dactilar`. De esta forma, personas interesadas en guardar pertenencias de gran valor en sus hogares podrán contar con un sistema que les proporcione un mayor grado de seguridad.
+
+Para diferenciar nuestro producto del resto que hay actualmente en el mercado, se añadió el uso de un mecanismo que simula un `brazo robótico`, el cual una vez abierta la caja fuerte, el brazo se despliega ofreciendo al usuario su contenido. Además, el sistema integra una cámara que realiza una transmisión en vivo de lo que sucede en el sistema de seguridad, permitiendo al dueño supervisar en tiempo real cualquier intento de acceso no autorizado.
+
+Como el sistema puede llegar a bloquearse en caso de fallar repetidamente en los métodos de autenticación (ver [Funcionamiento](#-funcionamiento)), era necesario contemplar un procedimiento de desbloqueo. Para ello, el sistema cuenta con unas `funcionalidades de administrador` gestionadas mediante `señales IR` enviadas a través de un control remoto IR. Dicho control, funcionará a modo de `llave de seguridad` accesible únicamente para el dueño o una persona de su confianza, permitiéndole desbloquear sl sistema.
+
+> [!NOTE]
+> El control remoto IR tiene más funcionalidades, las cuales serán detalladas en la sección de [Funcionamiento](#-funcionamiento).
+
+> [!IMPORTANT]
+> Tenga en cuenta que cuando nos referemimos a `desbloquear el sistema de seguridad` no implica que la caja fuerte se abra. El desbloqueo implica que el sistema deja de estar bloqueado y vuelve a su estado inicial. Puede considerarlo como una función de `reseteo`.
 
 ## 🧠 Funcionamiento
 El comportamiento de este sistema es bastante similar al de un sistema de seguridad común que se puede encontrar en el día a día. Para este proyecto, se decidió dividir el sistema en 2 bloques independientes, en uno se iba a encontrar toda la lógica y gestión de la caja fuerte, y en la otra, todo lo relacionado con la cámara y su pequeño sistema de refrigeración.
