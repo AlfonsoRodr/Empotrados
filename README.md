@@ -59,7 +59,7 @@ El objetivo de este proyecto es diseñar un sistema de seguridad que ofrezca un 
 
 Para diferenciar nuestro producto del resto que hay actualmente en el mercado, se añadió el uso de un mecanismo que simula un `brazo robótico`, el cual una vez abierta la caja fuerte, el brazo se despliega ofreciendo al usuario su contenido. Además, el sistema integra una cámara que realiza una transmisión en vivo de lo que sucede en el sistema de seguridad, permitiendo al dueño supervisar en tiempo real cualquier intento de acceso no autorizado.
 
-Como el sistema puede llegar a bloquearse en caso de fallar repetidamente en los métodos de autenticación (ver [Funcionamiento](#-funcionamiento)), era necesario contemplar un procedimiento de desbloqueo. Para ello, el sistema cuenta con unas `funcionalidades de administrador` gestionadas mediante `señales IR` enviadas a través de un control remoto IR. Dicho control, funcionará a modo de `llave de seguridad` accesible únicamente para el dueño o una persona de su confianza, permitiéndole desbloquear sl sistema.
+Como el sistema puede llegar a bloquearse en caso de fallar repetidamente en los métodos de autenticación (ver [Funcionamiento](#-funcionamiento)), era necesario contemplar un procedimiento de desbloqueo. Para ello, el sistema cuenta con unas `funcionalidades de administrador` gestionadas mediante `señales IR` enviadas a través de un control remoto IR. Dicho control, funcionará a modo de `llave de seguridad` accesible únicamente para el dueño o una persona de su confianza, permitiéndole desbloquear el sistema.
 
 > [!NOTE]
 > El control remoto IR tiene más funcionalidades, las cuales serán detalladas en la sección de [Funcionamiento](#-funcionamiento).
