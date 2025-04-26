@@ -65,7 +65,7 @@ Como el sistema puede llegar a bloquearse en caso de fallar repetidamente en los
 > El control remoto IR tiene más funcionalidades, las cuales serán detalladas en la sección de [Funcionamiento](#-funcionamiento).
 
 > [!IMPORTANT]
-> Tenga en cuenta que cuando nos referemimos a `desbloquear el sistema de seguridad` no implica que la caja fuerte se abra. El desbloqueo implica que el sistema deja de estar bloqueado y vuelve a su estado inicial. Puede considerarlo como una función de `reseteo`.
+> Tenga en cuenta que cuando nos referimos a `desbloquear el sistema de seguridad` no implica que la caja fuerte se abra. El desbloqueo implica que el sistema deja de estar bloqueado y vuelve a su estado inicial. Puede considerarlo como una función de `reseteo`.
 
 ## 🧠 Funcionamiento
 El comportamiento de este sistema es bastante similar al de un sistema de seguridad común que se puede encontrar en el día a día. Para este proyecto, se decidió dividir el sistema en 2 bloques independientes, en uno se iba a encontrar toda la lógica y gestión de la caja fuerte, y en la otra, todo lo relacionado con la cámara y su pequeño sistema de refrigeración.
