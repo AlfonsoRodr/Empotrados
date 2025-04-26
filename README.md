@@ -32,7 +32,7 @@
     </tr>
     <tr>
       <td>Héctor González Viñas</td>
-      <td>TBD</td>
+      <td>h.gonzalezv.2022@alumnos.urjc.es</td>
     </tr>
     <tr>
       <td>Andrés Muñoz Muñoz</td>
