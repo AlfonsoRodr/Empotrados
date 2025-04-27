@@ -1,5 +1,8 @@
 # Grupo 1: Sistema de Seguridad con Transmisión en Vivo y Personalización mediante IR
 
+>[!NOTE]
+> En caso de no tener ningún editor de texto que reconozca el formato `markdown (.md)` le recomendamos que acceda al [repositorio de github](https://github.com/AlfonsoRodr/Empotrados), en donde podrá visualizarlo sin ningún tipo de problemas, además de poder ver el proyecto al completo.
+
 ## Tabla de Contenidos
 - [Participantes](#-participantes)
 - [Librerías Necesarias](#-librerías-necesarias)
@@ -29,7 +32,7 @@
     </tr>
     <tr>
       <td>Héctor González Viñas</td>
-      <td>TBD</td>
+      <td>h.gonzalezv.2022@alumnos.urjc.es</td>
     </tr>
     <tr>
       <td>Andrés Muñoz Muñoz</td>
@@ -50,7 +53,19 @@ Para el desarrollo de este proyecto, se hicieron uso de algunas librerías exter
 - Wire.h
 
 ## 🚀 Introducción
-**BREVE INTRODUCCIÓN DEL PROYECTO**
+Las cajas fuertes son una de las herramientas de seguridad más populares actualmente, siendo tal impacto que las podemos encontrar en el día a día, como pueden ser en bancos, en habitaciones de hoteles, etc. En el ámbito doméstico, la mayoría de las cajas fuertes utilizan un único método de verificación, basado en una contraseña o un patrón. Por otro lado, aquellas cajas fuertes que ofrecen múltiples métodos de autenticación suelen estar destinadas a usos más avanzados, como en bancos u organizaciones.
+
+El objetivo de este proyecto es diseñar un sistema de seguridad que ofrezca un mecanismo de autenticación más robusta antes de poder acceder a la caja fuerte, enfocado para todo tipo de públicos (domésticos u organizacionales). Para ello, se añadió un método de autenticación basado en `datos biométricos`, utilizando en concreto la `huella dactilar`. De esta forma, personas interesadas en guardar pertenencias de gran valor en sus hogares podrán contar con un sistema que les proporcione un mayor grado de seguridad.
+
+Para diferenciar nuestro producto del resto que hay actualmente en el mercado, se añadió el uso de un mecanismo que simula un `brazo robótico`, el cual una vez abierta la caja fuerte, el brazo se despliega ofreciendo al usuario su contenido. Además, el sistema integra una cámara que realiza una transmisión en vivo de lo que sucede en el sistema de seguridad, permitiendo al dueño supervisar en tiempo real cualquier intento de acceso no autorizado.
+
+Como el sistema puede llegar a bloquearse en caso de fallar repetidamente en los métodos de autenticación (ver [Funcionamiento](#-funcionamiento)), era necesario contemplar un procedimiento de desbloqueo. Para ello, el sistema cuenta con unas `funcionalidades de administrador` gestionadas mediante `señales IR` enviadas a través de un control remoto IR. Dicho control, funcionará a modo de `llave de seguridad` accesible únicamente para el dueño o una persona de su confianza, permitiéndole desbloquear el sistema.
+
+> [!NOTE]
+> El control remoto IR tiene más funcionalidades, las cuales serán detalladas en la sección de [Funcionamiento](#-funcionamiento).
+
+> [!IMPORTANT]
+> Tenga en cuenta que cuando nos referimos a `desbloquear el sistema de seguridad` no implica que la caja fuerte se abra. El desbloqueo implica que el sistema deja de estar bloqueado y vuelve a su estado inicial. Puede considerarlo como una función de `reseteo`.
 
 ## 🧠 Funcionamiento
 El comportamiento de este sistema es bastante similar al de un sistema de seguridad común que se puede encontrar en el día a día. Para este proyecto, se decidió dividir el sistema en 2 bloques independientes, en uno se iba a encontrar toda la lógica y gestión de la caja fuerte, y en la otra, todo lo relacionado con la cámara y su pequeño sistema de refrigeración.
@@ -59,7 +74,7 @@ El comportamiento de este sistema es bastante similar al de un sistema de seguri
 Se dispone de una matriz de botones 4x4 en el que el usuario tendrá 3 intentos para introducir la contraseña correcta; en caso de agotar todos los intentos, el sistema se bloqueará, y solo el dueño de la caja fuerte podrá habilitar nuevamente el sistema. En caso contrario, el usuario deberá de validar su huella dactilar haciendo uso del lector de huellas, como último factor de autenticación antes de poder acceder a la caja fuerte; en donde tendrá un total de 5 intentos para colocar la huella correcta, en caso de agotar los intentos, el sistema se bloqueará. Una vez la huella sea reconocida, la caja fuerte se abrirá desplegando consigo un brazo mecánico que tendrá consigo el objeto que se guardó.
 
 ### 📷❄️ Bloque 2
-Para añadir una mejor seguridad y proporcionar mayor información sobre lo que está sucediendo cuando un usuaro intenta interacturar con el sistema, se utilizó una cámara de seguridad cuyo funcionamiento es indepediente del bloque anterior. Esta cámara transmitirá en vivo y en directo todo lo que suceda mientras un usuario se encuentre interactuando con el sistema. Sin embargo, esta cámara tiene un ligero defecto y es el aumento de temperatura que puede sufrir mientras esté operativa, es por ello, que se decidió controlar dicha temperatura haciendo uso de un sensor de temperatura, que, tras superar una temperatura umbral, activaría un ventilador para enfriar un poco dicha cámara.
+Para añadir una mejor seguridad y proporcionar mayor información sobre lo que está sucediendo cuando un usuario intenta interactuar con el sistema, se utilizó una cámara de seguridad cuyo funcionamiento es independiente del bloque anterior. Esta cámara transmitirá en vivo y en directo todo lo que suceda mientras un usuario se encuentre interactuando con el sistema. Sin embargo, esta cámara tiene un ligero defecto y es el aumento de temperatura que puede sufrir mientras esté operativa, es por ello, que se decidió controlar dicha temperatura haciendo uso de un sensor de temperatura, que, tras superar una temperatura umbral, activaría un ventilador para enfriar un poco dicha cámara.
 
 ### 📡 Gestión de IR y Comunicación mediante Protocolo I2C
 Como se explicó previamente, una vez que se agotan todos los intentos disponibles (ya sea para ingresar la contraseña o verificar la huella dactilar), el sistema entra en un estado de bloqueo permanente. Sin embargo, existe un mecanismo especial para que el propietario pueda desbloquearlo: el uso de un control remoto infrarrojo (IR). Al presionar un botón específico en el control, se envía una señal que es captada por un receptor IR, lo cual permite al sistema salir del estado de bloqueo.
@@ -85,7 +100,7 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
     <th>Botón Pulsado</th>
     <th>Señal Correspondiente (Dec)</th>
     <th>Caracter que se Envía</th>
-    <th>Acción que realiza el Arduino Receptor</th>
+    <th>Acción que realiza el Arduino Esclavo</th>
   </thead>
   <tbody>
     <tr>
@@ -120,7 +135,7 @@ A continuación, se presenta una tabla mostrando de una forma mñás visual lo m
 
 A continuación, se muestra un diagrama de actividad que refleja el funcionamiento del sistema de una forma más visual, para así complementar con lo dicho previamente.
 
-![Diagrama de Actividad Bloque 1](Proyecto/Diagrams/Others/DiagramaActividad1.jpg)
+![Diagrama de Actividad Bloque 1](Proyecto/Diagrams/Others/DigActividad.jpg)
 
 >[!NOTE]
 > La transmisión en vivo ofrecida por la cámara, se puede ver introduciendo en cualquier navegador web, la IP que dicha cámara devuelve una vez esté correctamente operativa.
@@ -220,6 +235,9 @@ A continuación, se muestra un diagrama de actividad que refleja el funcionamien
   </tbody>
 </table>
 
+>[!IMPORTANT]
+> El sensor de movimiento PIR no se utilizó en el desarrollo del proyecto, debido a la mala calibración que este tenía. Se intentó calibrar correctamente pero no se logró obtener el resultado esperado, por lo que se optó por descartarlo del proyecto.
+
 ## 🧩 Diseño
 En esta sección, se mostrarán las conexiones realizadas para llevar a cabo este proyecto.
 
@@ -305,7 +323,7 @@ Finalmente, las conexiones del sistema en su totalidad tiene el siguiente aspect
 A continuación, se describirá la estructura del proyecto, especificando la organización modular del código, la responsabilidad funcional de cada archivo fuente y la forma en que los distintos componentes interactúan entre sí dentro del sistema.
 
 >[!NOTE]
-> Tenga en cuenta que a pesar de que solo se haga mención al nombre del archivo como tal, cada uno de los archivos tiene su correspondiete interfaz (.h) y su implementación (.cpp)
+> Tenga en cuenta que a pesar de que solo se haga mención al nombre del archivo como tal, cada uno de los archivos tiene su correspondiente interfaz (.h) y su implementación (.cpp)
 
 <table>
   <thead>
@@ -317,7 +335,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     <tr>
       <td>MainProgram.ino</td>
       <td>Es el archivo principal del proyecto. Es donde se realiza la ejecución del software</td>
-      <td>PasswordManager, Fingerprint, MotorLock</td>
+      <td>PasswordManager, Fingerprint, MotorLock, MotorArm</td>
     </tr>
     <tr>
       <td>PasswordManager</td>
@@ -332,7 +350,12 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     <tr>
       <td>MotorLock</td>
       <td>Se encarga de gestionar el motor que opera el pestillo de la caja fuerte</td>
-      <td>I2CSignalHandler</td>
+      <td>NA</td>
+    </tr>
+    <tr>
+      <td>MotorArm</td>
+      <td>Se encarga de gestionar el motor que opera el brazo que se encuentra dentro de la caja fuerte</td>
+      <td>NA</td>
     </tr>
     <tr>
       <td>RemoteControl.ino</td>
@@ -346,7 +369,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     </tr>
     <tr>
       <td>I2CSignalHandler</td>
-      <td>Es el manejador de la comunicaicón mediante el módulo I2C</td>
+      <td>Es el manejador de la comunicación mediante el protocolo I2C siguiendo el esquema maestro-esclavo</td>
       <td>NA</td>
     </tr>
     <tr>
@@ -361,11 +384,13 @@ A continuación, se muestra un `diagrama de clases` para reflejar de una forma m
 
 ![Diagrama de Clases](Proyecto/Diagrams/Others/DigClases.jpg)
 
+>[!NOTE]
+> En el diagrama de clases mostrado anteriormente no se refleja el módulo de la cámara, esto se debe a que es un ejemplo que viene por defecto en el propio IDE de Arduino, que contiene sus propias librerías y archivos.
+
 ## 🧑‍💻 Implementación
 En esta sección se mostrará la implementación de cada uno de los archivos mencionados en la sección anterior.
-**IN PROGRESS**
 
-### MainProgram
+### MainProgram (.ino del Arduino Esclavo)
 ````cpp
 #include "PasswordManager.h"
 #include "FingerprintEsp.h"
@@ -1102,7 +1127,7 @@ void clearSignalFlag() {
 }
 ````
 
-### RemoteControl
+### RemoteControl (.ino del Arduino Maestro)
 ````cpp
 /**
  * @file RemoteControl.ino
