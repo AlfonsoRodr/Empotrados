@@ -53,8 +53,9 @@ void loop() {
     }
   }
   if (isMotorLockCloseRequested()) { // If the correct IR signal is received, the motor lock and motor arm return to the original state.
-    clearSignalFlag();
-    closeServo();
     armDown();
+    delay(5000);
+    closeServo();
+    clearSignalFlag();
   }
 }

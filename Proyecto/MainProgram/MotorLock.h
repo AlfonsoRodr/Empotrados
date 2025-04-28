@@ -11,8 +11,8 @@
 
 #include <Servo.h>
 
-#define SERVO_OPEN -90
-#define SERVO_CLOSE 120
+#define SERVO_OPEN 0
+#define SERVO_CLOSE 80
 
 /**
  * @brief Initializes the servo motor.
