@@ -1509,6 +1509,11 @@ En el caso de la caja grande, se adquirieron las bisagras y el pestillo necesari
 
 Por último, se montó todo el circuito dentro de la caja pequeña, estableciendo la conexión con los servos ubicados en la caja grande.
 
+A continuación, se proporcionan algunas imagenes de la infraestructura del sistema de seguridad:
+
+### Caja Fuerte
+![Exterior](Proyecto/Images/CajaFuerteExterior.jpg)
+
 >[!NOTE]
 >Debido a unos contratiempos no fue posible añadir un agujero para el cable de alimentación, por lo que se tiene que dejar la tapa de la caja pequeña un poco abierta para dicha conexión. 
 
