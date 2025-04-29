@@ -28,7 +28,7 @@
     </tr>
     <tr>
       <td>Raúl Sánchez Benítez</td>
-      <td>TBD</td>
+      <td>r.sanchezb.2022@alumnos.urjc.es</td>
     </tr>
     <tr>
       <td>Héctor González Viñas</td>
@@ -1508,6 +1508,9 @@ A continuación, se diseñó la disposición del LCD, el teclado y el sensor de 
 En el caso de la caja grande, se adquirieron las bisagras y el pestillo necesarios para implementar el mecanismo de cierre. Antes de fijar el pestillo, se probó su funcionamiento por separado para asegurar que todo encajaba correctamente. Una vez verificado, se instaló en su posición definitiva. En cuanto al brazo de cierre, se valoraron varios diseños, sin embargo, debido a la baja potencia del servo incluido en el kit, se optó por una solución que utilizase materiales ligeros y económicos para garantizar un funcionamiento fluido.
 
 Por último, se montó todo el circuito dentro de la caja pequeña, estableciendo la conexión con los servos ubicados en la caja grande.
+
+>[!NOTE]
+>Debido a unos contratiempos no fue posible añadir un agujero para el cable de alimentación, por lo que se tiene que dejar la tapa de la caja pequeña un poco abierta para dicha conexión. 
 
 ## 🧪 Demostración
 > [!NOTE]
