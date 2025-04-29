@@ -1514,4 +1514,4 @@ Por último, se montó todo el circuito dentro de la caja pequeña, estableciend
 
 ## 🧪 Demostración
 > [!NOTE]
-> En el video no se mostrará el código asociado a la cámara, ya que es un código provenientes de los ejemplos de Arduino, que lo único que se hizo fue introducir las credenciales para el Wifi.
+> En el video no se mostrará el código asociado a la cámara, ya que es un código proveniente de los ejemplos de Arduino, que lo único que se hizo fue introducir las credenciales para el Wifi.
