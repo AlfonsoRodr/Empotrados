@@ -1499,7 +1499,15 @@ void loop() {
 ```
 
 ## 🔧 Construcción
-**AQUÍ SE MENCIONARÁN LAS FASES EN LA QUE SE ORGANIZÓ EL PROYECTO PARA CONSTRUIR LA PARTE FÍSICA**
+Para iniciar la construcción de la caja fuerte, primero se planteó una idea base que sirvió como referencia para elaborar los primeros bocetos. Como la parte de la construcción se dejó para la fase final del proyecto, ya teníamos el circuito montado, lo cual nos permitió estimar el tamaño aproximado que debían tener las cajas. A pesar de ello, finalmente no se pudo integrar el módulo de la cámara debido a la falta de espacio.
+
+Con las medidas definidas, se contactó con un familiar que nos proporcionó la madera, herramientas y asistencia necesarias para montar la estructura básica de ambas cajas y realizar los orificios necesarios para conectar una con otra.
+
+A continuación, se diseñó la disposición del LCD, el teclado y el sensor de huellas, y se realizaron los cortes necesarios para su integración en la estructura.
+
+En el caso de la caja grande, se adquirieron las bisagras y el pestillo necesarios para implementar el mecanismo de cierre. Antes de fijar el pestillo, se probó su funcionamiento por separado para asegurar que todo encajaba correctamente. Una vez verificado, se instaló en su posición definitiva. En cuanto al brazo de cierre, se valoraron varios diseños, sin embargo, debido a la baja potencia del servo incluido en el kit, se optó por una solución que utilizase materiales ligeros y económicos para garantizar un funcionamiento fluido.
+
+Por último, se montó todo el circuito dentro de la caja pequeña, estableciendo la conexión con los servos ubicados en la caja grande.
 
 ## 🧪 Demostración
 > [!NOTE]
