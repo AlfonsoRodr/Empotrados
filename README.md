@@ -1499,7 +1499,7 @@ void loop() {
 ```
 
 ## 🔧 Construcción
-Para iniciar la construcción de la caja fuerte, primero se planteó una idea base que sirvió como referencia para elaborar los primeros bocetos. Como la parte de la construcción se dejó para la fase final del proyecto, ya teníamos el circuito montado, lo cual nos permitió estimar el tamaño aproximado que debían tener las cajas. A pesar de ello, finalmente no se pudo integrar el módulo de la cámara debido a la falta de espacio.
+Para iniciar la construcción de la caja fuerte, primero se planteó una idea base que sirvió como referencia para elaborar los primeros bocetos. Como la parte de la construcción se dejó para la fase final del proyecto, ya teníamos el circuito montado, lo cual nos permitió estimar el tamaño aproximado que debían tener las cajas.
 
 Con las medidas definidas, se contactó con un familiar que nos proporcionó la madera, herramientas y asistencia necesarias para montar la estructura básica de ambas cajas y realizar los orificios necesarios para conectar una con otra.
 
