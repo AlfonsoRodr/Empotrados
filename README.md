@@ -335,7 +335,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
   <tbody>
     <tr>
       <td>MainProgram.ino</td>
-      <td>Es el archivo principal del proyecto. Es donde se realiza la ejecución del software</td>
+      <td>Corresponde al arduino esclavo, y se encarga de ejecutar todo lo relacionado con la gestión de la caja fuerte</td>
       <td>PasswordManager, Fingerprint, MotorLock, MotorArm</td>
     </tr>
     <tr>
@@ -360,7 +360,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     </tr>
     <tr>
       <td>RemoteControl.ino</td>
-      <td>Archivo .ino del segundo Arduino (emisor). Se encarga de recibir las señales IR para luego enviarlas mediante comunicación serial al Arduino receptor. También, se encarga de controlar el ventilador que tiene el sistema si la temperatura de la cámara supera cierto umbral</td>
+      <td>Archivo .ino correspondiente al Arduino maestro. Se encarga de recibir las señales IR, decodificarlas y enviar un caracter concreto para cada señal mediante el protocolo de comunicación I2C al Arduino esclavo. También, se encarga de controlar el sistema de refrigeración que tiene el sistema si la temperatura de la cámara supera cierto umbral</td>
       <td>TemperatureFanController</td>
     </tr>
     <tr>
@@ -370,7 +370,7 @@ A continuación, se describirá la estructura del proyecto, especificando la org
     </tr>
     <tr>
       <td>I2CSignalHandler</td>
-      <td>Es el manejador de la comunicación mediante el protocolo I2C siguiendo el esquema maestro-esclavo</td>
+      <td>Es el manejador de la comunicación mediante el protocolo de comunicación I2C siguiendo el esquema maestro-esclavo</td>
       <td>NA</td>
     </tr>
     <tr>
